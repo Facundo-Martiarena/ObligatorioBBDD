@@ -17,7 +17,7 @@ import java.util.Date;
 public class Offer {
 
     @Id
-    private String id_offer;
+    private String idOffer;
     private String state;
     private Date acepted_date;
     private String email;

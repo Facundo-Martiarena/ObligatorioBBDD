@@ -24,13 +24,13 @@ public class OfferService {
         return offerRepository.save(offer);
     }
 
-    public String deleteOffer(String id_offer){
-        offerRepository.deleteById(id_offer);
+    public String deleteOffer(String idOffer){
+        offerRepository.deleteById(idOffer);
         return "Offer removed";
     }
 
     public Offer updateOffer(Offer offer){
-        Offer existingOffer = offerRepository.findById(offer.getId_offer()).orElse(null);
+        Offer existingOffer = offerRepository.findById(offer.getIdOffer()).orElse(null);
         existingOffer.setAcepted_date(offer.getAcepted_date());
         existingOffer.setState(offer.getState());
         existingOffer.setPhone(offer.getPhone());
