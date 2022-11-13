@@ -27,7 +27,7 @@ public class FigureService {
     }
 
     public Figure updateFigure(Figure figure){
-        Figure existingFigure = figureRepository.findByFigurePK(figure.getFigurePK());
+        Figure existingFigure = figureRepository.findById(figure.getFigurePK()).orElse(null);
 
         existingFigure.setDescription(figure.getDescription());
         existingFigure.setImage(figure.getImage());

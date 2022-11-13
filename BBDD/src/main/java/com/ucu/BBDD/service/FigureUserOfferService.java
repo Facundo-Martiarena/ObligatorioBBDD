@@ -28,7 +28,7 @@ public class FigureUserOfferService {
 
 
     public FigureUserOffer updateFigureUserOffer(FigureUserOffer figureUserOffer){
-        FigureUserOffer existingFigureUserOffer = figureUserOfferRepository.findByFigureUserOfferPK(figureUserOffer.getFigureUserOfferPK());
+        FigureUserOffer existingFigureUserOffer = figureUserOfferRepository.findById(figureUserOffer.getFigureUserOfferPK()).orElse(null);
 
         return figureUserOfferRepository.save(existingFigureUserOffer);
     }

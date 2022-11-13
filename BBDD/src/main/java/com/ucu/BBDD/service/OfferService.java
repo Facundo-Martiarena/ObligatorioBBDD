@@ -30,7 +30,7 @@ public class OfferService {
     }
 
     public Offer updateOffer(Offer offer){
-        Offer existingOffer = offerRepository.findByIdOffer(offer.getId_offer());
+        Offer existingOffer = offerRepository.findById(offer.getId_offer()).orElse(null);
         existingOffer.setAcepted_date(offer.getAcepted_date());
         existingOffer.setState(offer.getState());
         existingOffer.setPhone(offer.getPhone());

@@ -28,7 +28,7 @@ public class UserFigureService {
     }
 
     public UserFigure updateUserFigure(UserFigure userFigure){
-        UserFigure existingUserFigure = userFigureRepository.findByUserFigurePK(userFigure.getUserFigurePK());
+        UserFigure existingUserFigure = userFigureRepository.findById(userFigure.getUserFigurePK()).orElse(null);
         existingUserFigure.setUserFigurePK(userFigure.getUserFigurePK());
         existingUserFigure.setQuantity(userFigure.getQuantity());
 

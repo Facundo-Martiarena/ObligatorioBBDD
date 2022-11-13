@@ -31,7 +31,7 @@ public class PublicationController {
         return publicationService.deletePublication(publicationPK);
     }
 
-    @PutMapping
+    @PutMapping("/updatePublication")
     public Publication updatePublication(@RequestBody Publication publication){
         return publicationService.updatePublication(publication);
     }

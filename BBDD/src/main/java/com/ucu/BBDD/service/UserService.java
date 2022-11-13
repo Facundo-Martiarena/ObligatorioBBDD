@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public AppUser updateUser(AppUser appUser){
-        AppUser existingUser = appUserRepository.findByEmail(appUser.getEmail());
+        AppUser existingUser = appUserRepository.findById(appUser.getEmail()).orElse(null);
         existingUser.setCi(appUser.getCi());
         existingUser.setName(appUser.getName());
         existingUser.setLastname(appUser.getLastname());

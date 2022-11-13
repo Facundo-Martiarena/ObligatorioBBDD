@@ -31,7 +31,7 @@ public class FigureController {
         return figureService.deleteFigure(figurePK);
     }
 
-    @PutMapping
+    @PutMapping("/updateFigure")
     public Figure updateFigure(@RequestBody Figure figure){
         return figureService.updateFigure(figure);
     }

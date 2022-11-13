@@ -28,7 +28,7 @@ public class PublicationService {
     }
 
     public Publication updatePublication(Publication publication){
-        Publication existingPublication = publicationRepository.findByPublicationPK(publication.getPublicationPK());
+        Publication existingPublication = publicationRepository.findById(publication.getPublicationPK()).orElse(null);
         existingPublication.setPublicationPK(publication.getPublicationPK());
         existingPublication.setDate(publication.getDate());
         existingPublication.setActivated(publication.getActivated());

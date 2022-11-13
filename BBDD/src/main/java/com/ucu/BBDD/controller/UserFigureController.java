@@ -33,7 +33,7 @@ public class UserFigureController {
         return userFigureService.deleteUserFigure(userFigurePK);
     }
 
-    @PutMapping
+    @PutMapping("/updateUserFigure")
     public UserFigure updateUserFigure(@RequestBody UserFigure userFigure){
         return userFigureService.updateUserFigure(userFigure);
     }

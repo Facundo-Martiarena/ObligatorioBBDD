@@ -31,7 +31,7 @@ public class FigureUserOfferController {
         return figureUserOfferService.deleteFigureUserOffer(figureUserOfferPK);
     }
 
-    @PutMapping
+    @PutMapping("/updateFigureUser")
     public FigureUserOffer updateFigureUserOffer(@RequestBody FigureUserOffer figureUserOffer){
         return figureUserOfferService.updateFigureUserOffer(figureUserOffer);
     }

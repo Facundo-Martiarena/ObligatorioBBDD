@@ -29,7 +29,7 @@ public class AppUserController {
         return userService.deleteUser(email);
     }
 
-    @PutMapping
+    @PutMapping("/updateUser")
     public AppUser updateAppUser(@RequestBody AppUser appUser){
         return userService.updateUser(appUser);
     }

@@ -32,7 +32,7 @@ public class OfferController {
     }
 
 
-    @PutMapping
+    @PutMapping("/updateOffer")
     public Offer updateOffer(@RequestBody Offer offer){
         return offerService.updateOffer(offer);
     }
