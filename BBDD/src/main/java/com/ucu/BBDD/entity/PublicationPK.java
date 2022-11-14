@@ -9,8 +9,7 @@ public class PublicationPK implements Serializable {
 
     private static final long serialVersionUID = 6337440097868762236L;
     private String email;
-    private String country_f;
-    private Integer number_f;
+    private String number_f;
     private String state_damage;
 
     public String getEmail() {
@@ -21,19 +20,11 @@ public class PublicationPK implements Serializable {
         this.email = email;
     }
 
-    public String getCountry_f() {
-        return country_f;
-    }
-
-    public void setCountry_f(String country_f) {
-        this.country_f = country_f;
-    }
-
-    public Integer getNumber_f() {
+    public String getNumber_f() {
         return number_f;
     }
 
-    public void setNumber_f(Integer number_f) {
+    public void setNumber_f(String number_f) {
         this.number_f = number_f;
     }
 

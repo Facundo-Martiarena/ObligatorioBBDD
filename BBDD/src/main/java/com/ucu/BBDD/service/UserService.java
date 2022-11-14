@@ -2,6 +2,7 @@ package com.ucu.BBDD.service;
 
 import com.fabdelgado.ciuy.*;
 import com.ucu.BBDD.entity.AppUser;
+import com.ucu.BBDD.model.LoginRequestDTO;
 import com.ucu.BBDD.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,18 +33,16 @@ public class UserService {
     }
 
     //TODO cambiar returns por mensaje
-    public AppUser saveUser(AppUser appUser){
+    public boolean saveUser(AppUser appUser){
         if(validator.validateCi(appUser.getCi())){
             if (getUser(appUser)==null){
-                return appUserRepository.save(appUser);
+                 appUserRepository.save(appUser);
+                 return true;
             }else{
-                return appUser;
+                return false;
             }
         }
-
-        return appUser;
-
-
+        return false;
     }
 
     public String deleteUser(String email){
@@ -57,19 +56,29 @@ public class UserService {
     }
 
     //TODO dependiendo si el user existe o no, cambiar mensaje de return
-    public AppUser updateUser(AppUser appUser){
-        AppUser existingUser = this.getUser(appUser);
-        if (existingUser != null){
-            existingUser.setCi(appUser.getCi());
-            existingUser.setName(appUser.getName());
-            existingUser.setLastname(appUser.getLastname());
-            existingUser.setPassword(appUser.getPassword());
-            existingUser.setPhone(appUser.getPhone());
-        }
+//    public AppUser updateUser(AppUser appUser){
+//        AppUser existingUser = this.getUser(appUser);
+//        if (existingUser != null){
+//            existingUser.setCi(appUser.getCi());
+//            existingUser.setName(appUser.getName());
+//            existingUser.setLastname(appUser.getLastname());
+//            existingUser.setPassword(appUser.getPassword());
+//            existingUser.setPhone(appUser.getPhone());
+//        }
+//        return appUserRepository.save(existingUser);
+//    }
 
-
-        return appUserRepository.save(existingUser);
+    public String getUserEmail(AppUser appUser) {
+        return appUser.getEmail();
     }
 
+    public boolean loginCheck(LoginRequestDTO loginRequestDTO) {
 
+        boolean userExist = appUserRepository.findById(loginRequestDTO.getEmail()).isPresent();
+        if (userExist){
+            AppUser user = appUserRepository.findById(loginRequestDTO.getEmail()).get();
+            return user.getPassword().equals(loginRequestDTO.getPassword());
+        }
+        return false;
+    }
 }

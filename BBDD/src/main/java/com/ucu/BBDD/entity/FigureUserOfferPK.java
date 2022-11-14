@@ -8,8 +8,7 @@ public class FigureUserOfferPK implements Serializable {
 
     private static final long serialVersionUID = -7532564017503542158L;
     private String idOffer;
-    private Integer number_f_offer_bidder;
-    private String countryf_offer_bidder;
+    private String number_f_offer_bidder;
     private String state_damage_f_offer_bidder;
     private String email_bidder;
 

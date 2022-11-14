@@ -1,10 +1,13 @@
 package com.ucu.BBDD.controller;
 
-import com.ucu.BBDD.entity.AppUser;
 import com.ucu.BBDD.entity.Figure;
-import com.ucu.BBDD.entity.FigurePK;
+import com.ucu.BBDD.model.FigureRequestDTO;
+import com.ucu.BBDD.model.LoginRequestDTO;
+import com.ucu.BBDD.model.OkResponseDTO;
+import com.ucu.BBDD.model.UserResponseDTO;
 import com.ucu.BBDD.service.FigureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +18,16 @@ public class FigureController {
     @Autowired
     private FigureService figureService;
 
+        // Asociar una figurita a un usuario
     @PostMapping("/addFigure")
-    public Figure addFigure(@RequestBody Figure figure){
-        return figureService.saveFigure(figure);
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public OkResponseDTO addFigure(@RequestBody FigureRequestDTO figureRequestDTO){
+        boolean linkFigureToUser = figureService.linkFigureToUser(figureRequestDTO);
+        return new OkResponseDTO(linkFigureToUser);
     }
+
+
 
 
     @GetMapping("/figures")
@@ -26,13 +35,13 @@ public class FigureController {
         return figureService.getFigures();
     }
 
-    @DeleteMapping("/deleteFigure/{figurePK}")
-    public String deleteFigure(@PathVariable FigurePK figurePK){
-        return figureService.deleteFigure(figurePK);
-    }
+//    @DeleteMapping("/deleteFigure/{figurePK}")
+//    public String deleteFigure(@PathVariable FigurePK figurePK){
+//        return figureService.deleteFigure(figurePK);
+//    }
 
-    @PutMapping("/updateFigure")
-    public Figure updateFigure(@RequestBody Figure figure){
-        return figureService.updateFigure(figure);
-    }
+//    @PutMapping("/updateFigure")
+//    public Figure updateFigure(@RequestBody Figure figure){
+//        return figureService.updateFigure(figure);
+//    }
 }

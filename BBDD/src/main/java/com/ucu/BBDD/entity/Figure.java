@@ -13,8 +13,8 @@ import javax.persistence.*;
 @Table(name="figure")
 public class Figure {
 
-    @EmbeddedId
-    private FigurePK figurePK;
+    @Id
+    private String number;
     private String image;
     private String description;
 }
