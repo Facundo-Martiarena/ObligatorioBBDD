@@ -14,9 +14,13 @@ public class PublicationService {
     @Autowired
     private PublicationRepository publicationRepository;
 
+    @Autowired
+    private UserFigureService userFigureService;
+
     public List<Publication> getPublication(){
         return publicationRepository.findAll();
     }
+
 
     public Publication savePublication(Publication publication){
         return publicationRepository.save(publication);
