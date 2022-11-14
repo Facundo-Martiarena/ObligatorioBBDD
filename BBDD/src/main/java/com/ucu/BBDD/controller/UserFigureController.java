@@ -7,6 +7,7 @@ import com.ucu.BBDD.entity.UserFigurePK;
 import com.ucu.BBDD.service.PublicationService;
 import com.ucu.BBDD.service.UserFigureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,9 +24,11 @@ public class UserFigureController {
     }
 
 
-    @GetMapping("/userFigures")
-    public List<UserFigure> findAllUserFigure(){
-        return userFigureService.getUserFigure();
+    @GetMapping("/userFigures/{email}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public List<UserFigure> findAllUserFigure(@PathVariable("email") String email){
+        return userFigureService.getUserFigure(email);
     }
 
     @DeleteMapping("/deleteUserFigure/{userFigurePK}")

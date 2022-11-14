@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserFigureService {
@@ -14,8 +15,11 @@ public class UserFigureService {
     @Autowired
     private UserFigureRepository userFigureRepository;
 
-    public List<UserFigure> getUserFigure(){
-        return userFigureRepository.findAll();
+    public List<UserFigure> getUserFigure(String email){
+        List<UserFigure> allFigures = userFigureRepository.findAll();
+        List<UserFigure> userFigures;
+        userFigures =allFigures.stream().filter(fig-> email.equals(fig.getUserFigurePK().getEmail())).collect(Collectors.toList());
+        return userFigures;
     }
 
     public UserFigure saveUserFigure(UserFigure userFigure){
