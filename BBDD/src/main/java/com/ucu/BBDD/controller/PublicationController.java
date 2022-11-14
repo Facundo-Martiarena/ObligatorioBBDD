@@ -3,6 +3,7 @@ package com.ucu.BBDD.controller;
 import com.ucu.BBDD.entity.Offer;
 import com.ucu.BBDD.entity.Publication;
 import com.ucu.BBDD.entity.PublicationPK;
+import com.ucu.BBDD.model.PublicationsResponseDTO;
 import com.ucu.BBDD.service.PublicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +17,11 @@ public class PublicationController {
     @Autowired
     private PublicationService publicationService;
 
-    @GetMapping("/publications")
+    @GetMapping("/publications/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public List<Publication> findAllPublication(){
-        return publicationService.getPublication();
+    public PublicationsResponseDTO findAllPublication(@PathVariable("email") String email){
+        return publicationService.getPublications(email);
     }
 
 //    @PostMapping("/addPublication")

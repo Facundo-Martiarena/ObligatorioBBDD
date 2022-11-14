@@ -1,6 +1,7 @@
 package com.ucu.BBDD.model;
 
 
+import com.ucu.BBDD.entity.PublicationPK;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,9 +11,9 @@ public class PublicationResponseDTO {
     private String description;
     private StateFigure stateFigure;
     private String nameUser;
-    private String id;
+    private PublicationPK id;
 
-    public PublicationResponseDTO(String description, StateFigure stateFigure, String nameUser, String id) {
+    public PublicationResponseDTO(String description, StateFigure stateFigure, String nameUser, PublicationPK id) {
         this.description = description;
         this.stateFigure = stateFigure;
         this.nameUser = nameUser;

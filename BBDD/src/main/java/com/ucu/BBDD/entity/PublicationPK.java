@@ -1,5 +1,7 @@
 package com.ucu.BBDD.entity;
 
+import com.ucu.BBDD.model.StateFigure;
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Date;
@@ -10,7 +12,7 @@ public class PublicationPK implements Serializable {
     private static final long serialVersionUID = 6337440097868762236L;
     private String email;
     private String number_f;
-    private String state_damage;
+    private StateFigure state_damage;
 
     public String getEmail() {
         return email;
@@ -28,11 +30,11 @@ public class PublicationPK implements Serializable {
         this.number_f = number_f;
     }
 
-    public String getState_damage() {
+    public StateFigure getState_damage() {
         return state_damage;
     }
 
-    public void setState_damage(String state_damage) {
+    public void setState_damage(StateFigure state_damage) {
         this.state_damage = state_damage;
     }
 }
