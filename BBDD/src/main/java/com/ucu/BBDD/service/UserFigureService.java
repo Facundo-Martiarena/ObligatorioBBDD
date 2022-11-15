@@ -2,8 +2,10 @@ package com.ucu.BBDD.service;
 
 
 import com.ucu.BBDD.entity.*;
+import com.ucu.BBDD.model.UserFiguresResponseDTO;
 import com.ucu.BBDD.repository.UserFigureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +16,18 @@ public class UserFigureService {
 
     @Autowired
     private UserFigureRepository userFigureRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-    public List<UserFigure> getUserFigure(String email){
-        List<UserFigure> allFigures = userFigureRepository.findAll();
-        List<UserFigure> userFigures;
-        userFigures =allFigures.stream().filter(fig-> email.equals(fig.getUserFigurePK().getEmail())).collect(Collectors.toList());
-        return userFigures;
+    public List<UserFiguresResponseDTO> getUserFigures(String email){
+        return jdbcTemplate.query(String.format("SELECT uf.*, f.description FROM public.user_figure as uf, public.figure as f WHERE email = '%s' AND f.number = uf.number", email),
+                ((rs, rowNum) -> new UserFiguresResponseDTO(
+                        rs.getString("state_damage"),
+                        rs.getString("email"),
+                        rs.getString("number"),
+                        rs.getInt("quantity"),
+                        rs.getString("description")
+                )));
     }
 
     public UserFigure saveUserFigure(UserFigure userFigure){
