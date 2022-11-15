@@ -8,16 +8,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PublicationResponseDTO {
+    private String state_damage;
+    private String email;
+    private String number;
     private String description;
-    private StateFigure stateFigure;
-    private String nameUser;
-    private PublicationPK id;
 
-    public PublicationResponseDTO(String description, StateFigure stateFigure, String nameUser, PublicationPK id) {
+    public PublicationResponseDTO(String state_damage, String email, String number, String description) {
+        this.state_damage = state_damage;
+        this.email = email;
+        this.number = number;
         this.description = description;
-        this.stateFigure = stateFigure;
-        this.nameUser = nameUser;
-        this.id = id;
     }
 
     public PublicationResponseDTO() {
