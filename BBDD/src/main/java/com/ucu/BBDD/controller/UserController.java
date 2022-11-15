@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class UserController {
 
@@ -37,10 +39,11 @@ public class UserController {
     }
 
 
-//    @GetMapping("/users")
-//    public List<AppUser> findAllUsers(){
-//        return userService.getUsers();
-//    }
+    @GetMapping("/users")
+    public List<AppUser> findAllUsers(){
+        return userService.getUsers();
+    }
+
 
 
     //TODO: ver si agregar al final

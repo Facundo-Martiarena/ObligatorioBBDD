@@ -2,6 +2,7 @@ package com.ucu.BBDD.controller;
 
 import com.ucu.BBDD.entity.FigureUserOffer;
 import com.ucu.BBDD.entity.Offer;
+import com.ucu.BBDD.model.OfferResponseDTO;
 import com.ucu.BBDD.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +22,10 @@ public class OfferController {
     }
 
 
-    @GetMapping("/offers")
-    public List<Offer> findAllOffers(){
-        return offerService.getOffers();
-    }
+    /*@GetMapping("/offers/{email}")
+    public List<OfferResponseDTO> findAllOffers(@PathVariable String email){
+        return offerService.getOffers(email);
+    }*/
 
     @DeleteMapping("/deleteOffer/{id}")
     public String deleteOffer(@PathVariable String id){

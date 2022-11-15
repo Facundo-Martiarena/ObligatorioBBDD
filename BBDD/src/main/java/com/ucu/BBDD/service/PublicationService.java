@@ -5,6 +5,7 @@ import com.ucu.BBDD.model.PublicationResponseDTO;
 import com.ucu.BBDD.model.PublicationsResponseDTO;
 import com.ucu.BBDD.repository.FigureRepository;
 import com.ucu.BBDD.repository.PublicationRepository;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,13 @@ public class PublicationService {
     @Autowired
     private FigureService figureService;
 
+
     public List<Publication> getPublication(){
         return publicationRepository.findAll();
     }
 
     public PublicationsResponseDTO getPublications(String email){
+
         List<Publication> listPublication = this.getPublication();
         PublicationsResponseDTO publicationsResponseDTO = new PublicationsResponseDTO();
         List<PublicationResponseDTO> listPublicationResponseDTOS = null;

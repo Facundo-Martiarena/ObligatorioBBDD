@@ -5,10 +5,14 @@ import com.ucu.BBDD.entity.AppUser;
 import com.ucu.BBDD.model.LoginRequestDTO;
 import com.ucu.BBDD.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,36 +22,41 @@ public class UserService {
     @Autowired
     private AppUserRepository appUserRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     Validator validator = new Validator();
 
     public List<AppUser> getUsers(){
-        return appUserRepository.findAll();
+        return jdbcTemplate.query("SELECT * FROM public.appuser", ((rs, rowNum) -> new AppUser(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6))));
     }
 
     private AppUser getUser(AppUser appUser) {
-        return appUserRepository.findById(appUser.getEmail()).orElse(null);
+        String sql = String.format("SELECT * FROM public.appuser WHERE email = '%s'",appUser.getEmail());
+        AppUser user = jdbcTemplate.queryForObject(sql, ((rs, rowNum) -> new AppUser(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6))));
+        return user;
     }
 
-    private AppUser getUser(String email) {
-        return appUserRepository.findById(email).orElse(null);
+    public AppUser getUser(String email) {
+        String sql = String.format("SELECT * FROM public.appuser WHERE email = '%s' AND EXISTS (SELECT email FROM public.appuser WHERE email = '%s');",email,email);
+        return jdbcTemplate.queryForObject(sql, ((rs, rowNum) -> new AppUser(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6))));
     }
 
     //TODO cambiar returns por mensaje
     public boolean saveUser(AppUser appUser){
         if(validator.validateCi(appUser.getCi())){
-            if (getUser(appUser)==null){
-                 appUserRepository.save(appUser);
-                 return true;
-            }else{
-                return false;
-            }
+                String sql = String.format("INSERT INTO public.appuser(email, ci, lastname, name, password, phone) SELECT '%s', '%s', '%s', '%s','%s','%s' WHERE NOT EXISTS (SELECT email FROM public.appuser WHERE email = '%s')"
+                        ,appUser.getEmail(),appUser.getCi(),appUser.getLastname(),appUser.getName(),appUser.getPassword(),appUser.getPhone(),appUser.getEmail());
+                jdbcTemplate.update(sql);
+                return true;
         }
         return false;
     }
 
     public String deleteUser(String email){
         if(this.getUser(email)!=null){
-            appUserRepository.deleteById(email);
+            String sql = String.format("DELETE FROM public.appuser WHERE email = '%s'",email);
+            jdbcTemplate.update(sql);
             return "User removed";
         }else{
             return "ERROR";
@@ -74,11 +83,17 @@ public class UserService {
 
     public boolean loginCheck(LoginRequestDTO loginRequestDTO) {
 
-        boolean userExist = appUserRepository.findById(loginRequestDTO.getEmail()).isPresent();
-        if (userExist){
-            AppUser user = appUserRepository.findById(loginRequestDTO.getEmail()).get();
-            return user.getPassword().equals(loginRequestDTO.getPassword());
+        String email = loginRequestDTO.getEmail();
+        String sql = String.format("SELECT * FROM public.appuser WHERE email = '%s'",email);
+        AppUser appuser = jdbcTemplate.queryForObject(sql, ((rs, rowNum) -> new AppUser(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6))));
+        if (appuser != null){
+            if(appuser.getPassword().equals(loginRequestDTO.getPassword())){
+                return true;
+            }
         }
         return false;
+
     }
+
+
 }

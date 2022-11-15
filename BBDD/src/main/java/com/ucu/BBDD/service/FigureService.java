@@ -18,6 +18,7 @@ public class FigureService {
     @Autowired
     private UserFigureRepository userFigureRepository;
 
+
     public List<Figure> getFigures(){
         return figureRepository.findAll();
     }

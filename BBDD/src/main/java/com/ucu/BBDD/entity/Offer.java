@@ -1,12 +1,13 @@
 package com.ucu.BBDD.entity;
 
+import com.ucu.BBDD.model.StateFigure;
+import com.ucu.BBDD.model.StateOffer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -18,9 +19,12 @@ public class Offer {
 
     @Id
     private String idOffer;
-    private String state;
+    private StateOffer state;
     private Date acepted_date;
-    private String email;
-    private String password;
-    private String phone;
+    private UserFigurePK userFigurePKBidder;
+    private Integer publicationId;
+
+
+
+
 }
