@@ -25,15 +25,25 @@ public class PublicationService {
     private FigureService figureService;
 
 
-//    public List<Publication> getPublication(){
-//        return publicationRepository.findAll();
-//    }
-
     public List<PublicationResponseDTO> getPublications(String email){
         return jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
                         "FROM public.publication as p, public.figure as f" +
                         "WHERE p.activated = TRUE AND p.number_f = f.number" +
                         "AND p.email <> '%s", email),
+                ((rs, rowNum) -> new PublicationResponseDTO(
+                        rs.getString("state_damage"),
+                        rs.getString("email"),
+                        rs.getString("number"),
+                        rs.getString("description")
+                )));
+
+    }
+
+    public List<PublicationResponseDTO> getPublicationsUserMe(String email){
+        return jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
+                        "FROM public.publication as p, public.figure as f" +
+                        "WHERE p.activated = TRUE AND p.number_f = f.number" +
+                        "AND p.email = '%s", email),
                 ((rs, rowNum) -> new PublicationResponseDTO(
                         rs.getString("state_damage"),
                         rs.getString("email"),
@@ -66,13 +76,8 @@ public class PublicationService {
         return "Figure removed";
     }
 
-    public Publication updatePublication(Publication publication){
-        Publication existingPublication = publicationRepository.findById(publication.getPublicationPK()).orElse(null);
-        existingPublication.setPublicationPK(publication.getPublicationPK());
-        existingPublication.setDate(publication.getDate());
-        existingPublication.setActivated(publication.getActivated());
-        existingPublication.setPending_exchange(publication.getPending_exchange());
+    public boolean updateActivatedPublication(String email, String id){
 
-        return publicationRepository.save(existingPublication);
     }
+
 }

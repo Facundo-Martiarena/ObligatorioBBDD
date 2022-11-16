@@ -1,5 +1,6 @@
 package com.ucu.BBDD.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

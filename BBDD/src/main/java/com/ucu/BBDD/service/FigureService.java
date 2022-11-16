@@ -6,9 +6,12 @@ import com.ucu.BBDD.entity.UserFigurePK;
 import com.ucu.BBDD.model.FigureRequestDTO;
 import com.ucu.BBDD.repository.FigureRepository;
 import com.ucu.BBDD.repository.UserFigureRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 @Service
@@ -17,6 +20,9 @@ public class FigureService {
     private FigureRepository figureRepository;
     @Autowired
     private UserFigureRepository userFigureRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     public List<Figure> getFigures(){
@@ -32,38 +38,32 @@ public class FigureService {
     }
 
     public boolean linkFigureToUser(FigureRequestDTO figureRequestDTO) {
-        Figure figure = this.getFigure(figureRequestDTO.getFigureNumber());
-        if (figure != null){
-            UserFigurePK userFigurePK = new UserFigurePK(
-                    figureRequestDTO.getFigureState(),
-                    figureRequestDTO.getEmail(),
-                    figureRequestDTO.getFigureNumber());
+        String sql = String.format("INSERT INTO public.user_figure as uf(" +
+                "email, number, state_damage, quantity)" +
+                "VALUES ('%s', '%s', '%s', 1)" +
+                "ON CONFLICT (email, number, state_damage)" +
+                "DO" +
+                "UPDATE SET quantity = uf.quantity + 1;",figureRequestDTO.getEmail(),figureRequestDTO.getFigureNumber(),figureRequestDTO.getFigureState());
 
-            UserFigure userFigure = userFigureRepository.findById(userFigurePK).orElse(null);
-            if (userFigure != null ){
-                Integer quantity = userFigure.getQuantity() + 1;
-                userFigureRepository.save(new UserFigure(userFigurePK, quantity));
+        UserFigure result = jdbcTemplate.queryForObject(sql,((rs, rowNum) -> new UserFigure(
+                new UserFigurePK(
 
-            }else{
-                userFigureRepository.save(new UserFigure(userFigurePK, 1));
-            }
+                        rs.getString("state_damage"),
+                        rs.getString("email"),
+                        rs.getString("number")
 
+                ),
+
+                Integer.parseInt(rs.getString("quantity"))
+
+        )));
+
+        if(result != null){
             return true;
+        }else{
+            return false;
         }
-        return false;
+
+
     }
-
-//    public String deleteFigure(String number){
-//        figureRepository.deleteById(number);
-//        return "Figure removed";
-//    }
-
-//    public Figure updateFigure(Figure figure){
-//        Figure existingFigure = figureRepository.findById(figure.getFigurePK()).orElse(null);
-//
-//        existingFigure.setDescription(figure.getDescription());
-//        existingFigure.setImage(figure.getImage());
-//
-//        return figureRepository.save(existingFigure);
-//    }
 }

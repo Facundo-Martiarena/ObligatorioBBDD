@@ -25,21 +25,19 @@ public class PublicationController {
         return publicationService.getPublications(email);
     }
 
-//    @PostMapping("/addPublication")
-//    public Publication addPublication(@RequestBody Publication publication){
-//        return publicationService.savePublication(publication);
-//    }
-//
-//
-//
-//
-//    @DeleteMapping("/deletePublication/{publicationPK}")
-//    public String deletePublication(@PathVariable PublicationPK publicationPK){
-//        return publicationService.deletePublication(publicationPK);
-//    }
-//
-//    @PutMapping("/updatePublication")
-//    public Publication updatePublication(@RequestBody Publication publication){
-//        return publicationService.updatePublication(publication);
-//    }
+    @GetMapping("/mypublications/{email}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public List<PublicationResponseDTO> findAllMyPublication(@PathVariable("email") String email){
+        return publicationService.getPublicationsUserMe(email);
+    }
+
+    @PostMapping("/addPublication")
+    public Publication addPublication(@RequestBody String id){
+        return publicationService.savePublication(id);
+    }
+
+
+
+
 }

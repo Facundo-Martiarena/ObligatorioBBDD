@@ -41,11 +41,11 @@ public class OfferService {
         return "Offer removed";
     }
 
-    public Offer updateOffer(Offer offer){
-        Offer existingOffer = offerRepository.findById(offer.getIdOffer()).orElse(null);
-        existingOffer.setAcepted_date(offer.getAcepted_date());
-        existingOffer.setState(offer.getState());
-
-        return offerRepository.save(existingOffer);
-    }
+//    public Offer updateOffer(Offer offer){
+//        Offer existingOffer = offerRepository.findById(offer.getIdOffer()).orElse(null);
+//        existingOffer.setAcepted_date(offer.getAcepted_date());
+//        existingOffer.setState(offer.getState());
+//
+//        return offerRepository.save(existingOffer);
+//    }
 }

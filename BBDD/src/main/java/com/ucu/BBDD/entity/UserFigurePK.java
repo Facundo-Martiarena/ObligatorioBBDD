@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
+@Embeddable
 public class UserFigurePK implements Serializable {
 
     private static final long serialVersionUID = 1373167097440998364L;
