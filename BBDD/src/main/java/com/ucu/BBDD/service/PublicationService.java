@@ -33,7 +33,7 @@ public class PublicationService {
         return jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
                         "FROM public.publication as p, public.figure as f" +
                         "WHERE p.activated = TRUE AND p.number_f = f.number" +
-                        "AND p.email <>  '%s", email),
+                        "AND p.email <> '%s", email),
                 ((rs, rowNum) -> new PublicationResponseDTO(
                         rs.getString("state_damage"),
                         rs.getString("email"),
@@ -41,23 +41,24 @@ public class PublicationService {
                         rs.getString("description")
                 )));
 
-
-
-//        List<Publication> listPublication = this.getPublication();
-//        PublicationsResponseDTO publicationsResponseDTO = new PublicationsResponseDTO();
-//        List<PublicationResponseDTO> listPublicationResponseDTOS = null;
-//        for(Publication publication : listPublication){
-//            if(publication.getPublicationPK().getEmail() != email){
-//                listPublicationResponseDTOS.add(new PublicationResponseDTO(figureService.getFigure(publication.getPublicationPK().getNumber_f()).getDescription(),publication.getPublicationPK().getState_damage(),publication.getPublicationPK().getEmail(),publication.getPublicationPK()));
-//            }
-//        }
-//        publicationsResponseDTO.setPublications(listPublicationResponseDTOS);
-//
-//        return publicationsResponseDTO;
     }
 
-    public Publication savePublication(Publication publication){
-        return publicationRepository.save(publication);
+    public Publication savePublication(String id){
+
+        String sql = String.format("INSERT INTO public.publication(email, number_f, state_damage, activated, date, pending_exchange)" +
+                "SELECT usr.email, f.number, f.state_damage, false, (SELECT NOW()::timestamp), 'No acepted'" +
+                "FROM public.user_figure as f, public.appuser as usr WHERE f.number = '%s'",id);
+
+        return jdbcTemplate.queryForObject(sql,((rs, rowNum) -> new Publication(
+                new PublicationPK(
+                        rs.getString("email"),
+                        rs.getString("number_f"),
+                        rs.getString("state_damage")
+                ),
+                rs.getString("pending_exchange"),
+                rs.getDate("date"),
+                rs.getBoolean("activated")
+        )));
     }
 
     public String deletePublication(PublicationPK publicationPK){
