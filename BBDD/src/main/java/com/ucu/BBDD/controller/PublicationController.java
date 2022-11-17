@@ -2,6 +2,7 @@ package com.ucu.BBDD.controller;
 
 import com.ucu.BBDD.entity.Publication;
 import com.ucu.BBDD.model.PublicationResponseDTO;
+import com.ucu.BBDD.model.RequestBodyPublication;
 import com.ucu.BBDD.service.PublicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,9 +34,9 @@ public class PublicationController {
     public Publication addPublication(@RequestBody String id){
         return publicationService.savePublication(id);
     }
-    @PostMapping("/activate/{publication_id}/{activate}")
-    public Boolean activatePublication(@PathVariable("publication_id") Integer publication_id,@PathVariable("activate") Boolean activate) {
-        return publicationService.updateActivatedPublication(publication_id, activate);
+    @PostMapping("/activate")
+    public Boolean activatePublication(@RequestBody RequestBodyPublication requestBodyPublication) {
+        return publicationService.updateActivatedPublication(requestBodyPublication.getPublication_id(), requestBodyPublication.getActivate());
     }
 
 
