@@ -2,6 +2,7 @@ package com.ucu.BBDD.controller;
 
 import com.ucu.BBDD.entity.AppUser;
 import com.ucu.BBDD.model.LoginRequestDTO;
+import com.ucu.BBDD.model.RequestBodyUser;
 import com.ucu.BBDD.model.UserResponseDTO;
 import com.ucu.BBDD.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,16 +45,12 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @PostMapping("/changePassword")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public Boolean changePasswordUser(@RequestBody RequestBodyUser requestBodyUser){
+        return userService.changePassword(requestBodyUser.getEmail(),requestBodyUser.getPassword());
+    }
 
 
-    //TODO: ver si agregar al final
-//    @DeleteMapping("/deleteUser/{email}")
-//    public String deleteUser(@PathVariable String email){
-//        return userService.deleteUser(email);
-//    }
-
-//    @PutMapping("/updateUser")
-//    public AppUser updateAppUser(@RequestBody AppUser appUser){
-//        return userService.updateUser(appUser);
-//    }
 }

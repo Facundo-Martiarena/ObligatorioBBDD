@@ -65,18 +65,6 @@ public class UserService {
 
     }
 
-    //TODO dependiendo si el user existe o no, cambiar mensaje de return
-//    public AppUser updateUser(AppUser appUser){
-//        AppUser existingUser = this.getUser(appUser);
-//        if (existingUser != null){
-//            existingUser.setCi(appUser.getCi());
-//            existingUser.setName(appUser.getName());
-//            existingUser.setLastname(appUser.getLastname());
-//            existingUser.setPassword(appUser.getPassword());
-//            existingUser.setPhone(appUser.getPhone());
-//        }
-//        return appUserRepository.save(existingUser);
-//    }
 
     public String getUserEmail(AppUser appUser) {
         return appUser.getEmail();
@@ -93,6 +81,16 @@ public class UserService {
             }
         }
         return false;
+
+    }
+
+    public boolean changePassword(String email, String password) {
+
+        String sql = String.format("UPDATE public.appuser as usr" +
+                "SET password= '%s' " +
+                "WHERE usr.email = '%s';",password,email);
+
+        return jdbcTemplate.update(sql) != 0;
 
     }
 

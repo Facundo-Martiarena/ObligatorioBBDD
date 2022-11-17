@@ -32,13 +32,4 @@ public class FigureController {
         return figureService.getFigures();
     }
 
-//    @DeleteMapping("/deleteFigure/{figurePK}")
-//    public String deleteFigure(@PathVariable FigurePK figurePK){
-//        return figureService.deleteFigure(figurePK);
-//    }
-
-//    @PutMapping("/updateFigure")
-//    public Figure updateFigure(@RequestBody Figure figure){
-//        return figureService.updateFigure(figure);
-//    }
 }
