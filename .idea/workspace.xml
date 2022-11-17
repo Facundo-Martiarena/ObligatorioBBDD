@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="147af9b0-02a0-487d-a924-ba62e0000ea0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/PublicationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/PublicationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/PublicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/PublicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/PublicationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/PublicationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/service/PublicationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/service/PublicationService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -20,19 +20,15 @@ public class PublicationController {
     @GetMapping("/publications/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public OkResponseDTO findAllPublications(@PathVariable("email") String email){
-        Boolean resp = publicationService.getPublications(email);
-        return new OkResponseDTO(resp);
-
-
+    public List<PublicationResponseDTO> findAllPublications(@PathVariable("email") String email){
+        return publicationService.getPublications(email);
     }
 
     @GetMapping("/mypublications/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public OkResponseDTO findAllMyPublication(@PathVariable("email") String email){
-        Boolean resp = publicationService.getPublicationsUserMe(email);
-        return new OkResponseDTO(resp);
+    public List<PublicationResponseDTO> findAllMyPublication(@PathVariable("email") String email){
+        return publicationService.getPublicationsUserMe(email);
     }
 
     @PostMapping("/addPublication")

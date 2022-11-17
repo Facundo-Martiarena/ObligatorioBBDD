@@ -21,7 +21,7 @@ public class PublicationService {
     private FigureService figureService;
 
 
-    public Boolean getPublications(String email){
+    public List<PublicationResponseDTO> getPublications(String email){
         List<PublicationResponseDTO> result = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
                         " FROM public.publication as p, public.figure as f" +
                         " WHERE p.activated = TRUE AND p.number_f = f.number" +
@@ -33,15 +33,11 @@ public class PublicationService {
                         rs.getString("description")
                 )));
 
-        if(result.isEmpty()){
-            return  false;
-        }else {
-            return true;
-        }
+        return result;
 
     }
 
-    public Boolean getPublicationsUserMe(String email){
+    public List<PublicationResponseDTO> getPublicationsUserMe(String email){
         List<PublicationResponseDTO> result = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
                         "FROM public.publication as p, public.figure as f" +
                         "WHERE p.activated = TRUE AND p.number_f = f.number" +
@@ -53,11 +49,7 @@ public class PublicationService {
                         rs.getString("description")
                 )));
 
-        if(result.isEmpty()){
-            return false;
-        }else{
-            return true;
-        }
+        return result;
 
     }
 
