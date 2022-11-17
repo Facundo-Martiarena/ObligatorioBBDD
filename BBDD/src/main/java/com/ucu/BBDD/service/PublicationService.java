@@ -23,9 +23,9 @@ public class PublicationService {
 
     public Boolean getPublications(String email){
         List<PublicationResponseDTO> result = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
-                        "FROM public.publication as p, public.figure as f" +
-                        "WHERE p.activated = TRUE AND p.number_f = f.number" +
-                        "AND p.email <> '%s", email),
+                        " FROM public.publication as p, public.figure as f" +
+                        " WHERE p.activated = TRUE AND p.number_f = f.number" +
+                        " AND p.email <> '%s';", email),
                 ((rs, rowNum) -> new PublicationResponseDTO(
                         rs.getString("state_damage"),
                         rs.getString("email"),
