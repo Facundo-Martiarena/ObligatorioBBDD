@@ -13,6 +13,7 @@ import java.util.List;
 
 @Service
 public class FigureService {
+
     @Autowired
     private FigureRepository figureRepository;
     @Autowired
@@ -53,17 +54,4 @@ public class FigureService {
         return false;
     }
 
-//    public String deleteFigure(String number){
-//        figureRepository.deleteById(number);
-//        return "Figure removed";
-//    }
-
-//    public Figure updateFigure(Figure figure){
-//        Figure existingFigure = figureRepository.findById(figure.getFigurePK()).orElse(null);
-//
-//        existingFigure.setDescription(figure.getDescription());
-//        existingFigure.setImage(figure.getImage());
-//
-//        return figureRepository.save(existingFigure);
-//    }
 }

@@ -5,24 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="147af9b0-02a0-487d-a924-ba62e0000ea0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/entity/Offer.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/entity/Offer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/entity/PublicationPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/entity/PublicationPK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/entity/UserFigurePK.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/entity/UserFigurePK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/PublicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/PublicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/FigureController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/FigureController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/PublicationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/PublicationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/UserFigureController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/controller/UserFigureController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/entity/Offer.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/entity/Offer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/entity/PublicationPK.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/entity/PublicationPK.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/entity/UserFigure.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/entity/UserFigure.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/entity/UserFigurePK.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/entity/UserFigurePK.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/model/PublicationResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/model/PublicationResponseDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/model/StateOffer.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/model/StateOffer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/service/PublicationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/service/PublicationService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/service/UserFigureService.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/service/UserFigureService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/target/classes/com/ucu/BBDD/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/FigureService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/FigureService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

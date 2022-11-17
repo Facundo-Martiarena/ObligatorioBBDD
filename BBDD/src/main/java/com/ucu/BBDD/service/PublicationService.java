@@ -57,7 +57,7 @@ public class PublicationService {
                 ),
                 rs.getString("pending_exchange"),
                 rs.getDate("date"),
-                rs.getBoolean("activated")
+                rs.getBoolean("activated")git p
         )));
     }
 
