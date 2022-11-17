@@ -70,6 +70,15 @@ public class PublicationService {
         )));
     }
 
+    public Boolean updateActivatedPublication(Integer publication_id, Boolean activate){
+        String sql = String.format("UPDATE public.publication " +
+                "SET publication_id=%s, activated=%s;",publication_id,activate );
+
+        return jdbcTemplate.update(sql) != 0;
+    }
+
+
+
     public String deletePublication(PublicationUserFigureFK publicationUserFigureFK){
         publicationRepository.deleteById(publicationUserFigureFK);
         return "Figure removed";

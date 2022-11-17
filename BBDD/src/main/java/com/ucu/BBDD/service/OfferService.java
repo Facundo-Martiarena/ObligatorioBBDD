@@ -45,11 +45,31 @@ public class OfferService {
         return "Offer removed";
     }
 
-    public List<OfferResponseDTO> getOffersUserMe(String email){
+    public List<OfferResponseDTO> getOffersBidder(String email){
 
-        String sql = String.format("SELECT pub.email, o.number, f1.description as description_bidder, f2.description as description_publisher, o.state" +
-                "                FROM public.figure as f1,public.figure as f2, public.offer as o, public.publication as pub" +
-                "                WHERE o.email = '%s' AND f1.number = o.number AND f2.number = pub.number_f;",email);
+        String sql = String.format("SELECT pub.email as email_publisher, o.email_bidder as email_bidder, fuo.number_f_offer_bidder, f1.description as description_bidder, f2.description as description_publisher, o.state" +
+                " FROM public.figure as f1,public.figure as f2, public.offer as o, public.publication as pub," +
+                " public.figure_user_offer as fuo" +
+                " WHERE o.email = '%s' AND fuo.id_offer = o.id_offer" +
+                " AND f1.number = fuo.number_f_offer_bidder AND o.publication_id = pub.publication_id" +
+                " AND pub.number_f = f2.number;",email);
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponseDTO(
+                rs.getString("description_bidder"),
+                rs.getString("description_publisher"),
+                rs.getString("state")
+
+        ));
+
+    }
+
+    public List<OfferResponseDTO> getOffersPublisher(String email){
+
+        String sql = String.format("SELECT pub.email as email_publisher, o.email_bidder as email_bidder, fuo.number_f_offer_bidder, f1.description as description_bidder, f2.description as description_publisher, o.state" +
+                " FROM public.figure as f1,public.figure as f2, public.offer as o, public.publication as pub," +
+                " public.figure_user_offer as fuo" +
+                " WHERE pub.email = '%s' AND fuo.id_offer = o.id_offer" +
+                " AND f1.number = fuo.number_f_offer_bidder AND o.publication_id = pub.publication_id" +
+                " AND pub.number_f = f2.number;",email);
         return jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponseDTO(
                 rs.getString("description_bidder"),
                 rs.getString("description_publisher"),

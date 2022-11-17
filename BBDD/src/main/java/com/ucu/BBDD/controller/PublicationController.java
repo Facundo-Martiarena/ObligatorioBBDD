@@ -33,7 +33,10 @@ public class PublicationController {
     public Publication addPublication(@RequestBody String id){
         return publicationService.savePublication(id);
     }
-
+    @PostMapping("/activate/{publication_id}/{activate}")
+    public Boolean activatePublication(@PathVariable("publication_id") Integer publication_id,@PathVariable("activate") Boolean activate) {
+        return publicationService.updateActivatedPublication(publication_id, activate);
+    }
 
 
 

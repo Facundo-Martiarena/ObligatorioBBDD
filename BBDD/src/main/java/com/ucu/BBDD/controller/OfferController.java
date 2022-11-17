@@ -23,11 +23,18 @@ public class OfferController {
     }
 
 
-    @GetMapping("/offers/{email}")
+    @GetMapping("/offersBidder/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public List<OfferResponseDTO> findAllOffers(@PathVariable String email){
-        return offerService.getOffersUserMe(email);
+    public List<OfferResponseDTO> findAllOffersBidder(@PathVariable String email){
+        return offerService.getOffersBidder(email);
+    }
+
+    @GetMapping("/offersPublisher/{email}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public List<OfferResponseDTO> findAllOffersPublisher(@PathVariable String email){
+        return offerService.getOffersPublisher(email);
     }
 
     @DeleteMapping("/deleteOffer/{id}")
