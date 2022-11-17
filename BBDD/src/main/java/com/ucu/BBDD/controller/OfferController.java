@@ -3,6 +3,7 @@ package com.ucu.BBDD.controller;
 import com.ucu.BBDD.entity.FigureUserOffer;
 import com.ucu.BBDD.entity.Offer;
 import com.ucu.BBDD.model.OfferResponseDTO;
+import com.ucu.BBDD.model.RequestBodyOffer;
 import com.ucu.BBDD.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,8 @@ public class OfferController {
     private OfferService offerService;
 
     @PostMapping("/addOffer")
-    public Offer addOffer(@RequestBody Offer offer){
-        return offerService.saveOffer(offer);
+    public Offer addOffer(@RequestBody RequestBodyOffer requestBodyOffer){
+        return offerService.saveOffer(requestBodyOffer.getEmail(), requestBodyOffer.getPublication_id());
     }
 
 

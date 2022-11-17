@@ -35,9 +35,22 @@ public class OfferService {
        return new ArrayList<>();
     }*/
 
-    public Offer saveOffer(Offer offer){
+    public Offer saveOffer(String email, Integer publication_id){
 
-        return offerRepository.save(offer);
+        String sql = String.format("INSERT INTO public.offer(" +
+                " acepted_date, email_bidder, publication_id, state)" +
+                " SELECT (SELECT NOW()::timestamp), '%s', %s, pub.state_damage" +
+                " FROM public.publication as pub" +
+                " WHERE pub.publication_id = %s;",email,publication_id, publication_id);
+
+        return jdbcTemplate.queryForObject(sql,(rs, rowNum) -> new Offer(
+
+                rs.getInt("id_offer"),
+                rs.getString("state"),
+                rs.getDate("acepted_date"),
+                rs.getString("email_bidder"),
+                rs.getInt("publication_id")
+        ));
     }
 
     public String deleteOffer(String idOffer){
@@ -74,10 +87,10 @@ public class OfferService {
                 rs.getString("description_bidder"),
                 rs.getString("description_publisher"),
                 rs.getString("state")
-
         ));
-
     }
+
+
 
 //    public Offer updateOffer(Offer offer){
 //        Offer existingOffer = offerRepository.findById(offer.getIdOffer()).orElse(null);
