@@ -3,6 +3,7 @@ package com.ucu.BBDD.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -17,7 +18,11 @@ public class FigureUserOffer {
 
 
     @EmbeddedId
+    @NonNull
     private FigureUserOfferPK figureUserOfferPK;
+
+    @NonNull
+    private Integer quantity;
 
 
 

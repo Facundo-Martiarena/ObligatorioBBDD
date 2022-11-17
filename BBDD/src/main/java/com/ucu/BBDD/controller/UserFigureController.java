@@ -1,11 +1,8 @@
 package com.ucu.BBDD.controller;
 
-import com.ucu.BBDD.entity.Publication;
-import com.ucu.BBDD.entity.PublicationPK;
 import com.ucu.BBDD.entity.UserFigure;
 import com.ucu.BBDD.entity.UserFigurePK;
 import com.ucu.BBDD.model.UserFiguresResponseDTO;
-import com.ucu.BBDD.service.PublicationService;
 import com.ucu.BBDD.service.UserFigureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

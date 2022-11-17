@@ -10,13 +10,13 @@ import java.util.List;
 @Setter
 public class OfferResponseDTO {
 
-    private Figure figureBidder;
-    private List<Figure> figuresPublisher;
-    private StateOffer stateOffer;
+    private String description_publication;
+    private String description_offer;
+    private String state_offer;
 
-    public OfferResponseDTO(Figure figureBidder, List<Figure> figuresPublisher, StateOffer stateOffer) {
-        this.figureBidder = figureBidder;
-        this.figuresPublisher = figuresPublisher;
-        this.stateOffer = stateOffer;
+    public OfferResponseDTO(String description_publication, String description_offer, String state_offer) {
+        this.description_publication = description_publication;
+        this.description_offer = description_offer;
+        this.state_offer = state_offer;
     }
 }

@@ -1,23 +1,29 @@
 package com.ucu.BBDD.entity;
 
-import com.ucu.BBDD.model.StateFigure;
+import lombok.NonNull;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-import java.util.Date;
 
 @Embeddable
-public class PublicationPK implements Serializable {
+public class PublicationUserFigureFK implements Serializable {
 
     private static final long serialVersionUID = 6337440097868762236L;
+    @NonNull
     private String email;
+    @NonNull
     private String number_f;
+    @NonNull
     private String state_damage;
 
-    public PublicationPK(String email, String number_f, String state_damage) {
+    public PublicationUserFigureFK(String email, String number_f, String state_damage) {
         this.email = email;
         this.number_f = number_f;
         this.state_damage = state_damage;
+    }
+
+    public PublicationUserFigureFK() {
+
     }
 
     public String getEmail() {

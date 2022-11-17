@@ -20,11 +20,16 @@ import java.util.List;
 public class Offer {
 
     @Id
+    @NonNull
     private Integer idOffer;
+    @NonNull
     private String state;
+    @NonNull
     private Date acepted_date;
-    private UserFigurePK userFigurePKBidder;
-    private Integer publicationId;
+    @NonNull
+    private String email_bidder;
+    @NonNull
+    private Integer publication_id;
 
 
 

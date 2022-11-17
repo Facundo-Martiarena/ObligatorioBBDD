@@ -1,7 +1,6 @@
 package com.ucu.BBDD.model;
 
 
-import com.ucu.BBDD.entity.PublicationPK;
 import lombok.Getter;
 import lombok.Setter;
 
