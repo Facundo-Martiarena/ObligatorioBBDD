@@ -2,6 +2,7 @@ package com.ucu.BBDD.service;
 
 import com.ucu.BBDD.entity.*;
 import com.ucu.BBDD.model.PublicationResponseDTO;
+import com.ucu.BBDD.model.ResponsePublication;
 import com.ucu.BBDD.repository.PublicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,8 +22,10 @@ public class PublicationService {
     private FigureService figureService;
 
 
-    public List<PublicationResponseDTO> getPublications(String email){
-        List<PublicationResponseDTO> result = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
+    public ResponsePublication getPublications(String email){
+
+
+        List<PublicationResponseDTO> listPublications = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
                         " FROM public.publication as p, public.figure as f" +
                         " WHERE p.activated = TRUE AND p.number_f = f.number" +
                         " AND p.email <> '%s';", email),
@@ -33,12 +36,14 @@ public class PublicationService {
                         rs.getString("description")
                 )));
 
+        ResponsePublication result = new ResponsePublication(listPublications);
+
         return result;
 
     }
 
-    public List<PublicationResponseDTO> getPublicationsUserMe(String email){
-        List<PublicationResponseDTO> result = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
+    public ResponsePublication getPublicationsUserMe(String email){
+        List<PublicationResponseDTO> listPublications = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
                         "FROM public.publication as p, public.figure as f" +
                         "WHERE p.activated = TRUE AND p.number_f = f.number" +
                         "AND p.email = '%s", email),
@@ -48,6 +53,8 @@ public class PublicationService {
                         rs.getString("number"),
                         rs.getString("description")
                 )));
+
+        ResponsePublication result = new ResponsePublication(listPublications);
 
         return result;
 

@@ -4,6 +4,7 @@ import com.ucu.BBDD.entity.Publication;
 import com.ucu.BBDD.model.OkResponseDTO;
 import com.ucu.BBDD.model.PublicationResponseDTO;
 import com.ucu.BBDD.model.RequestBodyPublication;
+import com.ucu.BBDD.model.ResponsePublication;
 import com.ucu.BBDD.service.PublicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,14 @@ public class PublicationController {
     @GetMapping("/publications/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public List<PublicationResponseDTO> findAllPublications(@PathVariable("email") String email){
+    public ResponsePublication findAllPublications(@PathVariable("email") String email){
         return publicationService.getPublications(email);
     }
 
     @GetMapping("/mypublications/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public List<PublicationResponseDTO> findAllMyPublication(@PathVariable("email") String email){
+    public ResponsePublication findAllMyPublication(@PathVariable("email") String email){
         return publicationService.getPublicationsUserMe(email);
     }
 
