@@ -4,6 +4,7 @@ import com.ucu.BBDD.entity.Figure;
 import com.ucu.BBDD.entity.UserFigure;
 import com.ucu.BBDD.entity.UserFigurePK;
 import com.ucu.BBDD.model.FigureRequestDTO;
+import com.ucu.BBDD.model.FiguresResponse;
 import com.ucu.BBDD.repository.FigureRepository;
 import com.ucu.BBDD.repository.UserFigureRepository;
 import org.apache.catalina.User;
@@ -25,8 +26,9 @@ public class FigureService {
     private JdbcTemplate jdbcTemplate;
 
 
-    public List<Figure> getFigures(){
-        return figureRepository.findAll();
+    public FiguresResponse getFigures(){
+        List<Figure> figureList = figureRepository.findAll();
+        return new FiguresResponse(figureList);
     }
 
     public Figure getFigure(String number) {

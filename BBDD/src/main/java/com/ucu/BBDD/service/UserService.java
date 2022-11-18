@@ -3,18 +3,14 @@ package com.ucu.BBDD.service;
 import com.fabdelgado.ciuy.*;
 import com.ucu.BBDD.entity.AppUser;
 import com.ucu.BBDD.model.LoginRequestDTO;
+import com.ucu.BBDD.model.UsersResponse;
 import com.ucu.BBDD.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -27,9 +23,11 @@ public class UserService {
 
     Validator validator = new Validator();
 
-    public List<AppUser> getUsers(){
-        return jdbcTemplate.query("SELECT * FROM public.appuser",
+    public UsersResponse getUsers(){
+        List<AppUser> listUsers = jdbcTemplate.query("SELECT * FROM public.appuser",
                 ((rs, rowNum) -> new AppUser(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6))));
+
+        return new UsersResponse(listUsers);
     }
 
 //    private AppUser getUser(AppUser appUser) {

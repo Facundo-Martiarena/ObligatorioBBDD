@@ -2,6 +2,7 @@ package com.ucu.BBDD.controller;
 
 import com.ucu.BBDD.entity.UserFigure;
 import com.ucu.BBDD.entity.UserFigurePK;
+import com.ucu.BBDD.model.UserFigureResponse;
 import com.ucu.BBDD.model.UserFiguresResponseDTO;
 import com.ucu.BBDD.service.UserFigureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class UserFigureController {
     @GetMapping("/userFigures/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public List<UserFiguresResponseDTO> findAllUserFigure(@PathVariable("email") String email){
+    public UserFigureResponse findAllUserFigure(@PathVariable("email") String email){
         return userFigureService.getUserFigures(email);
     }
 

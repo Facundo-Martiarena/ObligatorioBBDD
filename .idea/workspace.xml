@@ -5,11 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="147af9b0-02a0-487d-a924-ba62e0000ea0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/model/RequestBodyUF.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/model/ResponsePublication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/model/FiguresResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/model/OffersResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/model/UserFigureResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/model/UsersResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/PublicationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/PublicationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/PublicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/PublicationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/FigureController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/FigureController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/OfferController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/OfferController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/UserFigureController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/controller/UserFigureController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/FigureService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/FigureService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/OfferService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/OfferService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/UserFigureService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/UserFigureService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +71,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/BBDD/src/main/java/com/ucu/BBDD/service/OfferService.java</url>
-          <line>62</line>
+          <line>63</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
