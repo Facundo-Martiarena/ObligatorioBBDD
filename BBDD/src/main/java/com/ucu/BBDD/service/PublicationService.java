@@ -2,6 +2,7 @@ package com.ucu.BBDD.service;
 
 import com.ucu.BBDD.entity.*;
 import com.ucu.BBDD.model.PublicationResponseDTO;
+import com.ucu.BBDD.model.RequestAddPublicationDTO;
 import com.ucu.BBDD.model.ResponsePublication;
 import com.ucu.BBDD.repository.PublicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,16 @@ public class PublicationService {
     public ResponsePublication getPublications(String email){
 
 
-        List<PublicationResponseDTO> listPublications = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
+        List<PublicationResponseDTO> listPublications = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.activated, f.description, p.publication_id" +
                         " FROM public.publication as p, public.figure as f" +
                         " WHERE p.activated = TRUE AND p.number_f = f.number" +
                         " AND p.email <> '%s';", email),
                 ((rs, rowNum) -> new PublicationResponseDTO(
-                        rs.getString("state_damage"),
+                        rs.getString("activated"),
                         rs.getString("email"),
-                        rs.getString("number"),
-                        rs.getString("description")
+                        rs.getString("number_f"),
+                        rs.getString("description"),
+                        rs.getInt("publication_id")
                 )));
 
         ResponsePublication result = new ResponsePublication(listPublications);
@@ -43,15 +45,16 @@ public class PublicationService {
     }
 
     public ResponsePublication getPublicationsUserMe(String email){
-        List<PublicationResponseDTO> listPublications = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.state_damage, f.description" +
-                        "FROM public.publication as p, public.figure as f" +
-                        "WHERE p.activated = TRUE AND p.number_f = f.number" +
-                        "AND p.email = '%s", email),
+        List<PublicationResponseDTO> listPublications = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.activated, f.description, p.publication_id" +
+                        " FROM public.publication as p, public.figure as f" +
+                        " WHERE  p.number_f = f.number" +
+                        " AND p.email = '%s'", email),
                 ((rs, rowNum) -> new PublicationResponseDTO(
-                        rs.getString("state_damage"),
+                        rs.getString("activated"),
                         rs.getString("email"),
-                        rs.getString("number"),
-                        rs.getString("description")
+                        rs.getString("number_f"),
+                        rs.getString("description"),
+                        rs.getInt("publication_id")
                 )));
 
         ResponsePublication result = new ResponsePublication(listPublications);
@@ -60,12 +63,12 @@ public class PublicationService {
 
     }
 
-    public Publication savePublication(String id){
+    public Publication savePublication(RequestAddPublicationDTO requestAddPublicationDTO){
 
 
         String sql = String.format("INSERT INTO public.publication(activated, date, pending_exchange, email, number_f, state_damage)" +
-                "SELECT false, (SELECT NOW()::timestamp), 'No acepted', usr.email, f.number, f.state_damage" +
-                "FROM public.user_figure as f, public.appuser as usr WHERE f.number = '%s'",id);
+                " SELECT false, (SELECT NOW()::timestamp), 'No acepted', usr.email, f.number, f.state_damage" +
+                " FROM public.user_figure as f, public.appuser as usr WHERE f.number = '%s' AND usr.email='%s'",requestAddPublicationDTO.getPublication_id(),requestAddPublicationDTO.getEmail());
 
         return jdbcTemplate.queryForObject(sql,((rs, rowNum) -> new Publication(
 
@@ -82,8 +85,9 @@ public class PublicationService {
     }
 
     public Boolean updateActivatedPublication(Integer publication_id, Boolean activate){
-        String sql = String.format("UPDATE public.publication " +
-                "SET publication_id=%s, activated=%s;",publication_id,activate );
+        String sql = String.format("UPDATE public.publication" +
+                " SET activated='%s'" +
+                " WHERE publication_id='%s'",activate,publication_id);
 
         return jdbcTemplate.update(sql) != 0;
     }

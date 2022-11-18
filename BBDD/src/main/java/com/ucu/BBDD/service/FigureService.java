@@ -41,11 +41,11 @@ public class FigureService {
 
     public boolean linkFigureToUser(FigureRequestDTO figureRequestDTO) {
         String sql = String.format("INSERT INTO public.user_figure as uf(" +
-                "email, number, state_damage, quantity)" +
-                "VALUES ('%s', '%s', '%s', 1)" +
-                "ON CONFLICT (email, number, state_damage)" +
-                "DO" +
-                "UPDATE SET quantity = uf.quantity + 1;",figureRequestDTO.getEmail(),figureRequestDTO.getFigureNumber(),figureRequestDTO.getFigureState());
+                " email, number, state_damage, quantity)" +
+                " VALUES ('%s', '%s', '%s', 1)" +
+                " ON CONFLICT (email, number, state_damage)" +
+                " DO" +
+                " UPDATE SET quantity = uf.quantity + 1;",figureRequestDTO.getEmail(),figureRequestDTO.getFigureNumber(),figureRequestDTO.getFigureState());
 
         UserFigure result = jdbcTemplate.queryForObject(sql,((rs, rowNum) -> new UserFigure(
                 new UserFigurePK(

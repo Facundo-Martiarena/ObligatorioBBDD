@@ -1,10 +1,7 @@
 package com.ucu.BBDD.controller;
 
 import com.ucu.BBDD.entity.Publication;
-import com.ucu.BBDD.model.OkResponseDTO;
-import com.ucu.BBDD.model.PublicationResponseDTO;
-import com.ucu.BBDD.model.RequestBodyPublication;
-import com.ucu.BBDD.model.ResponsePublication;
+import com.ucu.BBDD.model.*;
 import com.ucu.BBDD.service.PublicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,8 +30,8 @@ public class PublicationController {
     }
 
     @PostMapping("/addPublication")
-    public Publication addPublication(@RequestBody String id){
-        return publicationService.savePublication(id);
+    public Publication addPublication(@RequestBody RequestAddPublicationDTO requestAddPublicationDTO){
+        return publicationService.savePublication(requestAddPublicationDTO);
     }
 
 
