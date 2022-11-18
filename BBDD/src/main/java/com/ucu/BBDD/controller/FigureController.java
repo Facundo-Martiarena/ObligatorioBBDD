@@ -1,10 +1,7 @@
 package com.ucu.BBDD.controller;
 
 import com.ucu.BBDD.entity.Figure;
-import com.ucu.BBDD.model.FigureRequestDTO;
-import com.ucu.BBDD.model.LoginRequestDTO;
-import com.ucu.BBDD.model.OkResponseDTO;
-import com.ucu.BBDD.model.UserResponseDTO;
+import com.ucu.BBDD.model.*;
 import com.ucu.BBDD.service.FigureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +25,7 @@ public class FigureController {
     }
 
     @GetMapping("/figures")
-    public List<Figure> findAllFigures(){
+    public FiguresResponse findAllFigures(){
         return figureService.getFigures();
     }
 
