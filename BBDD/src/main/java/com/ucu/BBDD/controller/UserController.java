@@ -2,6 +2,7 @@ package com.ucu.BBDD.controller;
 
 import com.ucu.BBDD.entity.AppUser;
 import com.ucu.BBDD.model.LoginRequestDTO;
+import com.ucu.BBDD.model.OkResponseDTO;
 import com.ucu.BBDD.model.RequestBodyUser;
 import com.ucu.BBDD.model.UserResponseDTO;
 import com.ucu.BBDD.service.UserService;
@@ -48,8 +49,8 @@ public class UserController {
     @PostMapping("/changePassword")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public Boolean changePasswordUser(@RequestBody RequestBodyUser requestBodyUser){
-        return userService.changePassword(requestBodyUser.getEmail(),requestBodyUser.getPassword());
+    public OkResponseDTO changePasswordUser(@RequestBody RequestBodyUser requestBodyUser){
+        return new OkResponseDTO(userService.changePassword(requestBodyUser.getEmail(),requestBodyUser.getPassword()));
     }
 
 

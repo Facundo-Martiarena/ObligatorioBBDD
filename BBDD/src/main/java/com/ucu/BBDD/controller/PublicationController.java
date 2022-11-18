@@ -38,8 +38,9 @@ public class PublicationController {
 
 
     @PostMapping("/activate")
-    public Boolean activatePublication(@RequestBody RequestBodyPublication requestBodyPublication) {
-        return publicationService.updateActivatedPublication(requestBodyPublication.getPublication_id(), requestBodyPublication.getActivate());
+    public OkResponseDTO activatePublication(@RequestBody RequestBodyPublication requestBodyPublication) {
+        Boolean res = publicationService.updateActivatedPublication(requestBodyPublication.getPublication_id(), requestBodyPublication.getActivate());
+        return new OkResponseDTO(res);
     }
 
 

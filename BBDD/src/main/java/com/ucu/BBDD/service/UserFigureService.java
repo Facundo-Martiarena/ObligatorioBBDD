@@ -2,6 +2,7 @@ package com.ucu.BBDD.service;
 
 
 import com.ucu.BBDD.entity.*;
+import com.ucu.BBDD.model.OkResponseDTO;
 import com.ucu.BBDD.model.UserFiguresResponseDTO;
 import com.ucu.BBDD.repository.UserFigureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,6 @@ public class UserFigureService {
         return userFigureRepository.save(userFigure);
     }
 
-    public String deleteUserFigure(UserFigurePK userFigurePK){
-        userFigureRepository.deleteById(userFigurePK);
-        return "User-Figure removed";
-    }
 
     public UserFigure updateUserFigure(UserFigure userFigure){
         UserFigure existingUserFigure = userFigureRepository.findById(userFigure.getUserFigurePK()).orElse(null);

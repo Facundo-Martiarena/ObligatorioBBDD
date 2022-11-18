@@ -29,10 +29,6 @@ public class UserFigureController {
         return userFigureService.getUserFigures(email);
     }
 
-    @DeleteMapping("/deleteUserFigure/{userFigurePK}")
-    public String deleteUserFigure(@PathVariable UserFigurePK userFigurePK){
-        return userFigureService.deleteUserFigure(userFigurePK);
-    }
 
     @PutMapping("/updateUserFigure")
     public UserFigure updateUserFigure(@RequestBody UserFigure userFigure){
