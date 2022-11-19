@@ -11,12 +11,12 @@ import java.util.List;
 public class OfferResponseDTO {
 
     private String description_publication;
-    private String description_offer;
+    private List<String> description_bidder;
     private String state_offer;
 
-    public OfferResponseDTO(String description_publication, String description_offer, String state_offer) {
+    public OfferResponseDTO(String description_publication, List<String> description_bidder, String state_offer) {
         this.description_publication = description_publication;
-        this.description_offer = description_offer;
+        this.description_bidder = description_bidder;
         this.state_offer = state_offer;
     }
 }

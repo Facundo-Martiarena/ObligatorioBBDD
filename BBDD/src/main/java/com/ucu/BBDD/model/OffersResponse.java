@@ -12,12 +12,16 @@ import java.util.List;
 @Setter
 public class OffersResponse {
 
-    private List<OfferResponseDTO> offers;
+    private String description_bidder;
+    private List<String> description_publisher;
+    private String state_offer;
 
-    public OffersResponse() {
+    public OffersResponse(String description_bidder, List<String> description_publisher, String state_offer) {
+        this.description_bidder = description_bidder;
+        this.description_publisher = description_publisher;
+        this.state_offer = state_offer;
     }
 
-    public OffersResponse(List<OfferResponseDTO> offers) {
-        this.offers = offers;
+    public OffersResponse() {
     }
 }
