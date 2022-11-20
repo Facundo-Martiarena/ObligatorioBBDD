@@ -85,7 +85,7 @@ public class OfferService {
         offerBidderList.stream().forEach(offerB -> descriptions.add(offerB.getDescription_publisher()));
 
         if(descriptions.size() != 0){
-            return new OffersResponse(offerBidderList.get(0).getDescription_bidder(),descriptions,
+            return new OffersResponse(offerBidderList.get(0).getDescription_bidder(),new DescriptionPublisherDTO(descriptions),
                     offerBidderList.get(0).getState_offer());
         }
 
@@ -119,7 +119,7 @@ public class OfferService {
                 ,createOfferRequestDTO.getId_publication()
                 ,createOfferRequestDTO.getState_offer());
         System.out.println(sql);
-        id_offer = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Integer(rs.getInt("id_offer")));
+        id_offer = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> rs.getInt("id_offer"));
 
         List<FigureOfferDTO> figures = createOfferRequestDTO.getFigures();
 

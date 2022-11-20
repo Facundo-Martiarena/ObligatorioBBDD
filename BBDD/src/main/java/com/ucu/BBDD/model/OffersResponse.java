@@ -13,10 +13,10 @@ import java.util.List;
 public class OffersResponse {
 
     private String description_bidder;
-    private List<String> description_publisher;
+    private DescriptionPublisherDTO description_publisher;
     private String state_offer;
 
-    public OffersResponse(String description_bidder, List<String> description_publisher, String state_offer) {
+    public OffersResponse(String description_bidder,DescriptionPublisherDTO description_publisher, String state_offer) {
         this.description_bidder = description_bidder;
         this.description_publisher = description_publisher;
         this.state_offer = state_offer;

@@ -30,12 +30,6 @@ public class UserService {
         return new UsersResponse(listUsers);
     }
 
-//    private AppUser getUser(AppUser appUser) {
-//        String sql = String.format("SELECT * FROM public.appuser WHERE email = '%s'",appUser.getEmail());
-//        AppUser user = jdbcTemplate.queryForObject(sql, ((rs, rowNum) -> new AppUser(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6))));
-//        return user;
-//    }
-
     public AppUser getUser(String email) {
         String sql = String.format("SELECT * FROM public.appuser WHERE email = '%s' AND EXISTS (SELECT email FROM public.appuser WHERE email = '%s');",email,email);
         return jdbcTemplate.queryForObject(sql, ((rs, rowNum) -> new AppUser(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6))));

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -85,11 +86,22 @@ public class PublicationService {
     }
 
     public Boolean updateActivatedPublication(Integer publication_id, Boolean activate){
-        String sql = String.format("UPDATE public.publication" +
-                " SET activated='%s'" +
-                " WHERE publication_id='%s'",activate,publication_id);
 
-        return jdbcTemplate.update(sql) != 0;
+        String queryPubId = String.format("SELECT pub.publication_id " +
+                " FROM public.publication as pub, public.publication as pub2" +
+                " WHERE pub.publication_id = '%s' AND pub2.activated = true", publication_id);
+
+        List<Integer> activatedPub = jdbcTemplate.query(queryPubId, (rs, rowNum) -> rs.getInt("publication_id"));
+
+        if(activatedPub.size() < 3 || !activate ){
+            String sql = String.format("UPDATE public.publication" +
+                    " SET activated= %s " +
+                    " WHERE publication_id='%s'",activate,publication_id);
+            return jdbcTemplate.update(sql) != 0;
+        }
+
+        return false;
+
     }
 
 
