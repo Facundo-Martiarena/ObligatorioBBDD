@@ -65,7 +65,7 @@ public class OfferService {
         return "Offer removed";
     }
 
-    public OffersResponse getOffersBidder(String email){
+    public OfferResponseList getOffersBidder(String email){
 
         String sql = String.format("SELECT pub.email as email_publisher, o.email_bidder as email_bidder, fuo.number_f_offer_bidder, f1.description as description_bidder, f2.description as description_publisher, o.state" +
                 " FROM public.figure as f1,public.figure as f2, public.offer as o, public.publication as pub," +
@@ -81,12 +81,15 @@ public class OfferService {
         ));
 
         List<String> descriptions = new ArrayList<>();
-
+        OfferResponseList offerlist = new OfferResponseList();
+        List<OffersResponse> offers = new ArrayList<>();
         offerBidderList.stream().forEach(offerB -> descriptions.add(offerB.getDescription_publisher()));
 
         if(descriptions.size() != 0){
-            return new OffersResponse(offerBidderList.get(0).getDescription_bidder(),descriptions,
-                    offerBidderList.get(0).getState_offer());
+             offers.add(new OffersResponse(offerBidderList.get(0).getDescription_bidder(),descriptions,
+                     offerBidderList.get(0).getState_offer()));
+            offerlist.setListOffers(offers);
+            return offerlist;
         }
 
         return null;
