@@ -11,12 +11,15 @@ import java.util.List;
 public class OfferResponsePrimary {
 
     private String description_publisher;
-    private String description_bidder;
+    private Integer id_oferta;
     private String state_offer;
 
-    public OfferResponsePrimary(String description_publisher, String description_bidder, String state_offer) {
+    public OfferResponsePrimary(String description_publisher, Integer id_oferta, String state_offer) {
         this.description_publisher = description_publisher;
-        this.description_bidder = description_bidder;
+        this.id_oferta = id_oferta;
         this.state_offer = state_offer;
+    }
+
+    public OfferResponsePrimary() {
     }
 }

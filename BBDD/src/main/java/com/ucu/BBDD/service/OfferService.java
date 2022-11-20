@@ -65,34 +65,67 @@ public class OfferService {
         return "Offer removed";
     }
 
-    public OfferResponseList getOffersBidder(String email){
+//    public OfferResponseList getOffersBidder(String email){
+//
+//        String sql = String.format("SELECT pub.email as email_publisher, o.email_bidder as email_bidder, fuo.number_f_offer_bidder, f1.description as description_bidder, f2.description as description_publisher, o.state" +
+//                " FROM public.figure as f1,public.figure as f2, public.offer as o, public.publication as pub," +
+//                " public.figure_user_offer as fuo" +
+//                " WHERE o.email_bidder = '%s' AND fuo.id_offer = o.id_offer" +
+//                " AND f1.number = fuo.number_f_offer_bidder AND o.publication_id = pub.publication_id" +
+//                " AND pub.number_f = f2.number;",email);
+//        List<OfferResponsePrimary> offerBidderList = jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponsePrimary(
+//                rs.getString("description_bidder"),
+//                rs.getString("description_publisher"),
+//                rs.getString("state")
+//
+//        ));
+//
+//        List<String> descriptions = new ArrayList<>();
+//        OfferResponseList offerlist = new OfferResponseList();
+//        List<OffersResponse> offers = new ArrayList<>();
+//        offerBidderList.stream().forEach(offerB -> descriptions.add(offerB.getDescription_publisher()));
+//
+//        if(descriptions.size() != 0){
+//             offers.add(new OffersResponse(offerBidderList.get(0).getDescription_bidder(),descriptions,
+//                     offerBidderList.get(0).getState_offer()));
+//            offerlist.setListOffers(offers);
+//            return offerlist;
+//        }
 
-        String sql = String.format("SELECT pub.email as email_publisher, o.email_bidder as email_bidder, fuo.number_f_offer_bidder, f1.description as description_bidder, f2.description as description_publisher, o.state" +
-                " FROM public.figure as f1,public.figure as f2, public.offer as o, public.publication as pub," +
-                " public.figure_user_offer as fuo" +
-                " WHERE o.email_bidder = '%s' AND fuo.id_offer = o.id_offer" +
-                " AND f1.number = fuo.number_f_offer_bidder AND o.publication_id = pub.publication_id" +
-                " AND pub.number_f = f2.number;",email);
+//        return null;
+//    }
+
+    public OfferResponseList getOffersBidder(String email) {
+        String sql = String.format("SELECT o.id_offer,pub.email as email_publisher, o.email_bidder as email_bidder, f1.description as description_publisher, o.state" +
+                " FROM public.figure as f1, public.offer as o, public.publication as pub" +
+                " WHERE o.email_bidder = '%s' AND o.publication_id = pub.publication_id" +
+                " AND pub.number_f = f1.number",email);
         List<OfferResponsePrimary> offerBidderList = jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponsePrimary(
-                rs.getString("description_bidder"),
                 rs.getString("description_publisher"),
+                rs.getInt("id_offer"),
                 rs.getString("state")
-
         ));
 
-        List<String> descriptions = new ArrayList<>();
-        OfferResponseList offerlist = new OfferResponseList();
-        List<OffersResponse> offers = new ArrayList<>();
-        offerBidderList.stream().forEach(offerB -> descriptions.add(offerB.getDescription_publisher()));
+        OfferResponseList response = new OfferResponseList();
+        List<OffersResponse> listOffers = new ArrayList<>();
 
-        if(descriptions.size() != 0){
-             offers.add(new OffersResponse(offerBidderList.get(0).getDescription_bidder(),descriptions,
-                     offerBidderList.get(0).getState_offer()));
-            offerlist.setListOffers(offers);
-            return offerlist;
-        }
+        offerBidderList.forEach(e -> listOffers.add(new OffersResponse(e.getDescription_publisher(), this.getDescriptionsBidder(e.getId_oferta()), e.getState_offer()))  );
 
-        return null;
+        response.setListOffers(listOffers);
+        return response;
+
+    }
+
+    private List<String> getDescriptionsBidder(Integer id_oferta) {
+        List<String> descriptionsPublisher = new ArrayList<>();
+
+        String sql2 = String.format("SELECT f.description" +
+                " FROM public.figure_user_offer as fuo, public.figure as f" +
+                " WHERE id_offer = '%d' AND fuo.number_f_offer_bidder = f.number",id_oferta);
+        jdbcTemplate.query(sql2, (rs, rowNum) -> descriptionsPublisher.add(rs.getString("description")));
+
+        return descriptionsPublisher;
+
     }
 
 //    public OffersResponse getOffersPublisher(String email){
