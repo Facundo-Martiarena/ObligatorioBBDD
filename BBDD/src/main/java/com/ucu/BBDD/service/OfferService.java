@@ -85,7 +85,7 @@ public class OfferService {
         offerBidderList.stream().forEach(offerB -> descriptions.add(offerB.getDescription_publisher()));
 
         if(descriptions.size() != 0){
-            return new OffersResponse(offerBidderList.get(0).getDescription_bidder(),new DescriptionPublisherDTO(descriptions),
+            return new OffersResponse(offerBidderList.get(0).getDescription_bidder(),descriptions,
                     offerBidderList.get(0).getState_offer());
         }
 
