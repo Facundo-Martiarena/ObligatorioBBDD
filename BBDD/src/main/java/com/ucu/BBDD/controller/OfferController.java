@@ -38,6 +38,21 @@ public class OfferController {
         return offerService.getOffersBidder(email);
     }
 
+    @GetMapping("/offersPublication/{email}/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public OffersFromPublication findAllOffersFromPublication(@PathVariable String email, @PathVariable String id){
+        return offerService.getOffersFromPublication(email, id);
+    }
+
+    @PutMapping("/acceptOffer/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public OkResponseDTO acceptOffer( @PathVariable String id){
+        boolean accept = offerService.acceptOffer( id);
+        return new OkResponseDTO(accept);
+    }
+
 
     @DeleteMapping("/deleteOffer/{id}")
     public String deleteOffer(@PathVariable String id){

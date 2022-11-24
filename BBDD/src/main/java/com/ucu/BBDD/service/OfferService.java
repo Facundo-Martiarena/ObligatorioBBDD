@@ -116,6 +116,28 @@ public class OfferService {
 
     }
 
+    public OffersFromPublication getOffersFromPublication(String email, String publicationId) {
+        String sql = String.format("SELECT o.id_offer,pub.email as email_publisher, o.email_bidder as email_bidder, f1.description as description_publisher, f2.description as description_bidder,o.state" +
+                " FROM public.publication as pub, public.offer as o, public.figure_user_offer as fuo, public.figure as f1, public.figure as f2" +
+                " WHERE pub.email = '%s'" +
+                " AND pub.publication_id = %d" +
+                " AND pub.publication_id = o.publication_id" +
+                " AND o.id_offer = fuo.id_offer",email, Integer.parseInt(publicationId));
+        List<OfferResponsePrimary> offers = jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponsePrimary(
+                rs.getString("description_publisher"),
+                rs.getInt("id_offer"),
+                rs.getString("state")
+        ));
+
+        OffersFromPublication response = new OffersFromPublication();
+        List<OffersResponse> listOffers = new ArrayList<>();
+
+        offers.forEach(e -> listOffers.add(new OffersResponse(e.getDescription_publisher(), this.getDescriptionsBidder(e.getId_oferta()), e.getState_offer()))  );
+        response.setListOffers(listOffers);
+
+        return response;
+    }
+
     private List<String> getDescriptionsBidder(Integer id_oferta) {
         List<String> descriptionsPublisher = new ArrayList<>();
 
@@ -164,6 +186,82 @@ public class OfferService {
                 " id_offer, number_f_offer_bidder, state_damage_f_offer_bidder, quantity)" +
                 " VALUES ('%d','%s' , '%s', '%d');", id_offer, f.getNumber(), f.getState_damage(), f.getQuantity())));
     return true;
+    }
+
+    public boolean acceptOffer(String id) {
+
+            // Setear de estado a ACEPTADA
+        String sqlOffer = String.format("UPDATE public.offer as o" +
+                " SET acepted_date=NOW(), state='ACEPTADA'" +
+                " WHERE o.id_offer = %d;",Integer.parseInt(id));
+        jdbcTemplate.update(sqlOffer);
+
+            // Buscar el ID de la publicacion relacionada con la oferta
+        String sqlPubIdFromOfferId = String.format("SELECT publication_id FROM public.offer WHERE id_offer = %d;",Integer.parseInt(id));
+        Integer id_pub = jdbcTemplate.queryForObject(sqlPubIdFromOfferId, (rs, rowNum) -> rs.getInt("publication_id"));
+
+            // Rechazar todas las demas ofertas asociadas a la publicacion
+        String sqlRejectedOffers = String.format("UPDATE public.offer as o" +
+                " SET state='RECHAZADA'" +
+                " WHERE o.publication_id = %d AND o.id_offer <> %d;", id_pub, Integer.parseInt(id));
+        jdbcTemplate.update(sqlRejectedOffers);
+
+            // Desactivar la publicacion
+        String sqlPublication = String.format("UPDATE public.publication as pub" +
+                " SET pending_exchange='DESACTIVADO', state=false" +
+                " WHERE pub.publication_id=%d;",id_pub);
+        jdbcTemplate.update(sqlPublication);
+
+            // Buscar el quantity de la figurita asociada a la publicacion
+        String sqlQuantityPublication = String.format("SELECT uf.quantity, uf.number, uf.state_damage" +
+                " FROM public.user_figure as uf, public.publication as pub" +
+                " WHERE pub.publication_id = %d AND pub.state_damage = uf.state_damage AND pub.number_f = uf.number", id_pub);
+        //Integer quantity = jdbcTemplate.queryForObject(sqlQuantityPublication, (rs, rowNum) -> rs.getInt("quantity"));
+        UserFiguresResponseDTO userFigure = jdbcTemplate.queryForObject(sqlQuantityPublication, (rs, rowNum) ->
+                (new UserFiguresResponseDTO(rs.getString("state_damage"),
+                        rs.getString("email"),
+                        rs.getString("number"),
+                        rs.getInt("quantity"),
+                        "")));
+
+            // Si el quantity es 1, elimino la tupla, sino resto en 1 la cantidad.
+            // Suponemos que una figurita publicada no puede al mismo tiempo usarse para ofertar
+        if (userFigure.getQuantity() > 1) {
+            String sqlLessQuantity = String.format("UPDATE public.user_figure" +
+                    " SET quantity = uf.quantity - 1" +
+                    " FROM public.user_figure as uf, public.publication as pub" +
+                    " WHERE pub.publication_id = %d AND pub.state_damage = uf.state_damage AND pub.number_f = uf.number", id_pub);
+            jdbcTemplate.update(sqlLessQuantity);
+        }else {
+                // Buscar todos los ids usados por el publicante en ofertas
+            String sqlOffersToDelete = String.format("SELECT id_offer" +
+                    " FROM public.offer as o, public.figure_user_offer as fuo" +
+                    " WHERE o.email_bidder = '%s'" +
+                    " AND fuo.number_f_offer_bidder= '%s'" +
+                    " AND fuo.state_damage_f_offer_bidder= '%s'" +
+                    " AND o.id_offer=fuo.id_offer", userFigure.getEmail(), userFigure.getNumber(), userFigure.getState_damage());
+
+            List<Integer> offersToDelete = jdbcTemplate.query(sqlOffersToDelete, (rs, rowNum) ->
+                    rs.getInt("id_offer"));
+
+            offersToDelete.forEach(offer -> jdbcTemplate.update(String.format("UPDATE public.offer as o" +
+                    " SET state='DESACTIVO'" +
+                    " WHERE o.id_offer=%d;", offer)));
+
+            String sqlLessQuantity = String.format("DELETE public.user_figure" +
+                    " FROM public.user_figure as uf, public.publication as pub" +
+                    " WHERE pub.publication_id = %d AND pub.state_damage = uf.state_damage AND pub.number_f = uf.number", id_pub);
+            jdbcTemplate.update(sqlLessQuantity);
+
+            String sqlDeleteUserFigures = String.format("DELETE" +
+                    " FROM public.user_figure as uf" +
+                    " WHERE uf.email= '%s'" +
+                    " AND uf.number= '%s'" +
+                    " AND uf.state_damage ='%s'", userFigure.getEmail(), userFigure.getNumber(), userFigure.getState_damage());
+            jdbcTemplate.update(sqlDeleteUserFigures);
+        }
+
+        return true;
     }
 
 

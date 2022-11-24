@@ -7,13 +7,13 @@ import java.util.List;
 
 @Getter
 @Setter
-public class OfferResponseList {
-
+public class OffersFromPublication {
     private List<OffersResponse> listOffers;
 
-    public void OffersResponse(List<OffersResponse> listOffers){
+    public void OffersResponse(List<OffersResponse> listOffers) {
         this.listOffers = listOffers;
     }
-    public void OffersResponse(){
+
+    public void OffersResponse() {
     }
 }
