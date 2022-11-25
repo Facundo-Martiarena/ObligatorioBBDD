@@ -16,10 +16,16 @@ public class OffersResponse {
     private List<String> description_publisher;
     private String state_offer;
 
-    public OffersResponse(String description_bidder,List<String> description_publisher, String state_offer) {
+    private Integer id_offer;
+
+    private Integer publication_id;
+
+    public OffersResponse(String description_bidder, List<String> description_publisher, String state_offer, Integer id_offer, Integer publication_id) {
         this.description_bidder = description_bidder;
         this.description_publisher = description_publisher;
         this.state_offer = state_offer;
+        this.id_offer = id_offer;
+        this.publication_id = publication_id;
     }
 
     public OffersResponse() {

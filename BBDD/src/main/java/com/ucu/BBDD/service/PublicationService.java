@@ -49,7 +49,7 @@ public class PublicationService {
         List<PublicationResponseDTO> listPublications = jdbcTemplate.query(String.format("SELECT p.email, p.number_f, p.activated, f.description, p.publication_id" +
                         " FROM public.publication as p, public.figure as f" +
                         " WHERE  p.number_f = f.number" +
-                        " AND p.email = '%s'", email),
+                        " AND p.email = '%s' AND p.pending_exchange <> 'DESACTIVO'", email),
                 ((rs, rowNum) -> new PublicationResponseDTO(
                         rs.getString("activated"),
                         rs.getString("email"),
@@ -89,14 +89,14 @@ public class PublicationService {
 
         String queryPubId = String.format("SELECT pub.publication_id " +
                 " FROM public.publication as pub, public.publication as pub2" +
-                " WHERE pub.publication_id = '%s' AND pub2.activated = true", publication_id);
+                " WHERE pub.publication_id = '%s' AND pub2.activated = true AND pub.email = pub2.email", publication_id);
 
         List<Integer> activatedPub = jdbcTemplate.query(queryPubId, (rs, rowNum) -> rs.getInt("publication_id"));
 
         if(activatedPub.size() < 3 || !activate ){
             String sql = String.format("UPDATE public.publication" +
                     " SET activated= %s " +
-                    " WHERE publication_id='%s'",activate,publication_id);
+                    " WHERE publication_id=%d",activate,publication_id);
             return jdbcTemplate.update(sql) != 0;
         }
 

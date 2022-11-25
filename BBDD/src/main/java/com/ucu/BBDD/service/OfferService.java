@@ -96,20 +96,21 @@ public class OfferService {
 //    }
 
     public OfferResponseList getOffersBidder(String email) {
-        String sql = String.format("SELECT o.id_offer,pub.email as email_publisher, o.email_bidder as email_bidder, f1.description as description_publisher, o.state" +
+        String sql = String.format("SELECT pub.publication_id, o.id_offer,pub.email as email_publisher, o.email_bidder as email_bidder, f1.description as description_publisher, o.state" +
                 " FROM public.figure as f1, public.offer as o, public.publication as pub" +
                 " WHERE o.email_bidder = '%s' AND o.publication_id = pub.publication_id" +
                 " AND pub.number_f = f1.number",email);
         List<OfferResponsePrimary> offerBidderList = jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponsePrimary(
                 rs.getString("description_publisher"),
                 rs.getInt("id_offer"),
-                rs.getString("state")
+                rs.getString("state"),
+                rs.getInt("publication_id")
         ));
 
         OfferResponseList response = new OfferResponseList();
         List<OffersResponse> listOffers = new ArrayList<>();
 
-        offerBidderList.forEach(e -> listOffers.add(new OffersResponse(e.getDescription_publisher(), this.getDescriptionsBidder(e.getId_oferta()), e.getState_offer()))  );
+        offerBidderList.forEach(e -> listOffers.add(new OffersResponse(e.getDescription_publisher(), this.getDescriptionsBidder(e.getId_offer()), e.getState_offer(),e.getId_offer(),e.getPublication_id()))  );
 
         response.setListOffers(listOffers);
         return response;
@@ -117,22 +118,40 @@ public class OfferService {
     }
 
     public OffersFromPublication getOffersFromPublication(String email, String publicationId) {
-        String sql = String.format("SELECT o.id_offer,pub.email as email_publisher, o.email_bidder as email_bidder, f1.description as description_publisher, f2.description as description_bidder,o.state" +
-                " FROM public.publication as pub, public.offer as o, public.figure_user_offer as fuo, public.figure as f1, public.figure as f2" +
-                " WHERE pub.email = '%s'" +
-                " AND pub.publication_id = %d" +
+        String sql = String.format("SELECT pub.publication_id, o.id_offer,pub.email as email_publisher, o.email_bidder as email_bidder, f1.description as description_publisher, f2.description as description_bidder,o.state" +
+                " FROM public.publication as pub, public.offer as o, public.figure_user_offer as fuo, public.figure as f1, public.figure as f2, public.user_figure as uf1, public.user_figure as uf2" +
+                " WHERE pub.publication_id = %d" +
                 " AND pub.publication_id = o.publication_id" +
-                " AND o.id_offer = fuo.id_offer",email, Integer.parseInt(publicationId));
+                " AND o.id_offer = fuo.id_offer" +
+                " AND pub.number_f = uf1.number" +
+                " AND pub.state_damage = uf1.state_damage" +
+                " AND uf1.number = f1.number" +
+                " AND fuo.number_f_offer_bidder = uf2.number" +
+                " AND fuo.state_damage_f_offer_bidder = uf2.state_damage" +
+                " AND uf2.number = f2.number",Integer.parseInt(publicationId));
         List<OfferResponsePrimary> offers = jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponsePrimary(
                 rs.getString("description_publisher"),
                 rs.getInt("id_offer"),
-                rs.getString("state")
+                rs.getString("state"),
+                rs.getInt("publication_id")
         ));
 
         OffersFromPublication response = new OffersFromPublication();
         List<OffersResponse> listOffers = new ArrayList<>();
 
-        offers.forEach(e -> listOffers.add(new OffersResponse(e.getDescription_publisher(), this.getDescriptionsBidder(e.getId_oferta()), e.getState_offer()))  );
+
+        List<Integer> idOffersAlreadyAdded = new ArrayList<>();
+
+
+        for (OfferResponsePrimary offer: offers) {
+            if (!idOffersAlreadyAdded.contains(offer.getId_offer())){
+                listOffers.add(new OffersResponse(offer.getDescription_publisher(), this.getDescriptionsBidder(offer.getId_offer()), offer.getState_offer(),offer.getId_offer(), offer.getPublication_id()));
+                idOffersAlreadyAdded.add(offer.getId_offer());
+            }
+        }
+
+
+        //offers.forEach(e -> (!listOffers.contains(e.getId_oferta()) ? listOffers.add(new OffersResponse(e.getDescription_publisher(), this.getDescriptionsBidder(e.getId_oferta()), e.getState_offer())) : ));
         response.setListOffers(listOffers);
 
         return response;
@@ -150,22 +169,7 @@ public class OfferService {
 
     }
 
-//    public OffersResponse getOffersPublisher(String email){
-//
-//        String sql = String.format("SELECT pub.email as email_publisher, o.email_bidder as email_bidder, fuo.number_f_offer_bidder, f1.description as description_bidder, f2.description as description_publisher, o.state" +
-//                " FROM public.figure as f1,public.figure as f2, public.offer as o, public.publication as pub," +
-//                " public.figure_user_offer as fuo" +
-//                " WHERE pub.email = '%s' AND fuo.id_offer = o.id_offer" +
-//                " AND f1.number = fuo.number_f_offer_bidder AND o.publication_id = pub.publication_id" +
-//                " AND pub.number_f = f2.number;",email);
-//        List<OfferResponseDTO> offerList = jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponseDTO(
-//                rs.getString("description_bidder"),
-//                rs.getString("description_publisher"),
-//                rs.getString("state")
-//        ));
-//
-//        return new OffersResponse(offerList);
-//    }
+
 
     public boolean saveOffer(CreateOfferRequestDTO createOfferRequestDTO) {
         Integer id_offer;
@@ -188,7 +192,11 @@ public class OfferService {
     return true;
     }
 
+
+
     public boolean acceptOffer(String id) {
+
+
 
             // Setear de estado a ACEPTADA
         String sqlOffer = String.format("UPDATE public.offer as o" +
@@ -208,21 +216,21 @@ public class OfferService {
 
             // Desactivar la publicacion
         String sqlPublication = String.format("UPDATE public.publication as pub" +
-                " SET pending_exchange='DESACTIVADO', state=false" +
+                " SET pending_exchange='DESACTIVO', activated=false" +
                 " WHERE pub.publication_id=%d;",id_pub);
         jdbcTemplate.update(sqlPublication);
 
             // Buscar el quantity de la figurita asociada a la publicacion
-        String sqlQuantityPublication = String.format("SELECT uf.quantity, uf.number, uf.state_damage" +
+        String sqlQuantityPublication = String.format("SELECT pub.email, uf.quantity, uf.number, uf.state_damage" +
                 " FROM public.user_figure as uf, public.publication as pub" +
-                " WHERE pub.publication_id = %d AND pub.state_damage = uf.state_damage AND pub.number_f = uf.number", id_pub);
+                " WHERE pub.publication_id = %d AND pub.state_damage = uf.state_damage AND pub.number_f = uf.number AND pub.email = uf.email", id_pub);
         //Integer quantity = jdbcTemplate.queryForObject(sqlQuantityPublication, (rs, rowNum) -> rs.getInt("quantity"));
-        UserFiguresResponseDTO userFigure = jdbcTemplate.queryForObject(sqlQuantityPublication, (rs, rowNum) ->
-                (new UserFiguresResponseDTO(rs.getString("state_damage"),
+        UserFiguresResponseDTO userFigure = jdbcTemplate.queryForObject(sqlQuantityPublication, (rs, rowNum) -> new UserFiguresResponseDTO(
+                        rs.getString("state_damage"),
                         rs.getString("email"),
                         rs.getString("number"),
                         rs.getInt("quantity"),
-                        "")));
+                        ""));
 
             // Si el quantity es 1, elimino la tupla, sino resto en 1 la cantidad.
             // Suponemos que una figurita publicada no puede al mismo tiempo usarse para ofertar
@@ -234,7 +242,7 @@ public class OfferService {
             jdbcTemplate.update(sqlLessQuantity);
         }else {
                 // Buscar todos los ids usados por el publicante en ofertas
-            String sqlOffersToDelete = String.format("SELECT id_offer" +
+            String sqlOffersToDelete = String.format("SELECT o.id_offer" +
                     " FROM public.offer as o, public.figure_user_offer as fuo" +
                     " WHERE o.email_bidder = '%s'" +
                     " AND fuo.number_f_offer_bidder= '%s'" +
@@ -244,14 +252,9 @@ public class OfferService {
             List<Integer> offersToDelete = jdbcTemplate.query(sqlOffersToDelete, (rs, rowNum) ->
                     rs.getInt("id_offer"));
 
-            offersToDelete.forEach(offer -> jdbcTemplate.update(String.format("UPDATE public.offer as o" +
+            offersToDelete.forEach(offer -> jdbcTemplate.update(String.format("UPDATE public.offer" +
                     " SET state='DESACTIVO'" +
-                    " WHERE o.id_offer=%d;", offer)));
-
-            String sqlLessQuantity = String.format("DELETE public.user_figure" +
-                    " FROM public.user_figure as uf, public.publication as pub" +
-                    " WHERE pub.publication_id = %d AND pub.state_damage = uf.state_damage AND pub.number_f = uf.number", id_pub);
-            jdbcTemplate.update(sqlLessQuantity);
+                    " WHERE id_offer=%d;", offer)));
 
             String sqlDeleteUserFigures = String.format("DELETE" +
                     " FROM public.user_figure as uf" +
@@ -260,6 +263,15 @@ public class OfferService {
                     " AND uf.state_damage ='%s'", userFigure.getEmail(), userFigure.getNumber(), userFigure.getState_damage());
             jdbcTemplate.update(sqlDeleteUserFigures);
         }
+
+        return true;
+    }
+
+    public boolean rejectOffer(String id){
+        String sqlReject = String.format("UPDATE public.offer as o SET state = 'RECHAZADA' " +
+                "WHERE o.id_offer = %d", Integer.parseInt(id));
+
+        jdbcTemplate.update(sqlReject);
 
         return true;
     }

@@ -53,6 +53,16 @@ public class OfferController {
         return new OkResponseDTO(accept);
     }
 
+    @PutMapping("/rejectOffer/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public OkResponseDTO rejectOffer( @PathVariable String id){
+        boolean accept = offerService.rejectOffer( id);
+        return new OkResponseDTO(accept);
+    }
+
+
+
 
     @DeleteMapping("/deleteOffer/{id}")
     public String deleteOffer(@PathVariable String id){
