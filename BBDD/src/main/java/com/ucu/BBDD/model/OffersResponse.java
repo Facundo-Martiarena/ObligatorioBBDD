@@ -7,17 +7,13 @@ import lombok.Setter;
 
 import java.util.List;
 
-
 @Getter
 @Setter
 public class OffersResponse {
-
-    private String description_bidder;
+    private String description_bidder; // descripcion de la figurita a la cual se realiza la oferta
     private List<String> description_publisher;
     private String state_offer;
-
     private Integer id_offer;
-
     private Integer publication_id;
 
     public OffersResponse(String description_bidder, List<String> description_publisher, String state_offer, Integer id_offer, Integer publication_id) {

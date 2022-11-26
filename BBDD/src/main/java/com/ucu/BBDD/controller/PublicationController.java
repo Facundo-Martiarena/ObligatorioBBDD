@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 public class PublicationController {
 
@@ -31,7 +29,7 @@ public class PublicationController {
 
     @PostMapping("/addPublication")
     public Publication addPublication(@RequestBody RequestAddPublicationDTO requestAddPublicationDTO){
-        return publicationService.savePublication(requestAddPublicationDTO);
+        return publicationService.createPublication(requestAddPublicationDTO);
     }
 
 

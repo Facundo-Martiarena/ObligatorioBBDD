@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,11 +63,12 @@ public class PublicationService {
 
     }
 
-    public Publication savePublication(RequestAddPublicationDTO requestAddPublicationDTO){
+    public Publication createPublication(RequestAddPublicationDTO requestAddPublicationDTO){
 
+        //TODO: VALIDAR SI SE NECESITA EL pending_exchange
 
         String sql = String.format("INSERT INTO public.publication(activated, date, pending_exchange, email, number_f, state_damage)" +
-                " SELECT false, (SELECT NOW()::timestamp), 'No acepted', usr.email, f.number, f.state_damage" +
+                " SELECT false, (SELECT NOW()::timestamp), 'PUEDE INTERCAMBIAR', usr.email, f.number, f.state_damage" +
                 " FROM public.user_figure as f, public.appuser as usr WHERE f.number = '%s' AND usr.email='%s'",requestAddPublicationDTO.getPublication_id(),requestAddPublicationDTO.getEmail());
 
         return jdbcTemplate.queryForObject(sql,((rs, rowNum) -> new Publication(

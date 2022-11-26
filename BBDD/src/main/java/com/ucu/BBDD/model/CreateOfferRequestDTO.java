@@ -1,8 +1,5 @@
 package com.ucu.BBDD.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 
 

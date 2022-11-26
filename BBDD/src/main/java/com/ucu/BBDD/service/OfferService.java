@@ -204,7 +204,7 @@ public class OfferService {
 
     public boolean acceptOffer(String id) {
 
-            // Setear de estado a ACEPTADA
+            // Setear de estado de la oferta a ACEPTADA
         String sqlOffer = String.format("UPDATE public.offer as o" +
                 " SET acepted_date=NOW(), state='ACEPTADA'" +
                 " WHERE o.id_offer = %d;",Integer.parseInt(id));
@@ -214,11 +214,12 @@ public class OfferService {
         String sqlPubIdFromOfferId = String.format("SELECT publication_id FROM public.offer WHERE id_offer = %d;",Integer.parseInt(id));
         Integer id_pub = jdbcTemplate.queryForObject(sqlPubIdFromOfferId, (rs, rowNum) -> rs.getInt("publication_id"));
 
-            // Rechazar todas las demas ofertas asociadas a la publicacion
-        String sqlRejectedOffers = String.format("UPDATE public.offer as o" +
-                " SET state='RECHAZADA'" +
+            // Cancelar todas las demas ofertas asociadas a la publicacion
+            // No se rechazan porque da lugar a que se pueda contraofertar
+        String sqlCancelOffers = String.format("UPDATE public.offer as o" +
+                " SET state='CANCELADA'" +
                 " WHERE o.publication_id = %d AND o.id_offer <> %d;", id_pub, Integer.parseInt(id));
-        jdbcTemplate.update(sqlRejectedOffers);
+        jdbcTemplate.update(sqlCancelOffers);
 
             // Desactivar la publicacion
         String sqlPublication = String.format("UPDATE public.publication as pub" +
@@ -259,7 +260,7 @@ public class OfferService {
                     rs.getInt("id_offer"));
 
             offersToDelete.forEach(offer -> jdbcTemplate.update(String.format("UPDATE public.offer" +
-                    " SET state='DESACTIVO'" +
+                    " SET state='CANCELADA'" +
                     " WHERE id_offer=%d;", offer)));
 
             String sqlDeleteUserFigures = String.format("DELETE" +
@@ -269,6 +270,8 @@ public class OfferService {
                     " AND uf.state_damage ='%s'", userFigure.getEmail(), userFigure.getNumber(), userFigure.getState_damage());
             jdbcTemplate.update(sqlDeleteUserFigures);
         }
+
+
 
         return true;
     }
