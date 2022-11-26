@@ -26,18 +26,18 @@ public class FigureService {
     private JdbcTemplate jdbcTemplate;
 
 
-    public FiguresResponse getFigures(){
-        List<Figure> figureList = figureRepository.findAll();
-        return new FiguresResponse(figureList);
-    }
+//    public FiguresResponse getFigures(){
+//        List<Figure> figureList = figureRepository.findAll();
+//        return new FiguresResponse(figureList);
+//    }
 
-    public Figure getFigure(String number) {
-        return figureRepository.findById(number).orElse(null);
-    }
-
-    public Figure saveFigure(Figure figure){
-        return figureRepository.save(figure);
-    }
+//    public Figure getFigure(String number) {
+//        return figureRepository.findById(number).orElse(null);
+//    }
+//
+//    public Figure saveFigure(Figure figure){
+//        return figureRepository.save(figure);
+//    }
 
     public boolean linkFigureToUser(FigureRequestDTO figureRequestDTO) {
         String sql = String.format("INSERT INTO public.user_figure as uf(" +

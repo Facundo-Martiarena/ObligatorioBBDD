@@ -73,7 +73,6 @@ public class UserService {
             }
         }
         return false;
-
     }
 
     public boolean changePassword(String email, String password) {

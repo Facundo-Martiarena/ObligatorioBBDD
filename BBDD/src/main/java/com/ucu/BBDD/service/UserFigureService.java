@@ -32,17 +32,17 @@ public class UserFigureService {
                 ))));
     }
 
-    public UserFigure saveUserFigure(UserFigure userFigure){
-        return userFigureRepository.save(userFigure);
-    }
+//    public UserFigure saveUserFigure(UserFigure userFigure){
+//        return userFigureRepository.save(userFigure);
+//    }
 
 
-    public UserFigure updateUserFigure(UserFigure userFigure){
-        UserFigure existingUserFigure = userFigureRepository.findById(userFigure.getUserFigurePK()).orElse(null);
-        existingUserFigure.setUserFigurePK(userFigure.getUserFigurePK());
-        existingUserFigure.setQuantity(userFigure.getQuantity());
-
-        return userFigureRepository.save(existingUserFigure);
-    }
+//    public UserFigure updateUserFigure(UserFigure userFigure){
+//        UserFigure existingUserFigure = userFigureRepository.findById(userFigure.getUserFigurePK()).orElse(null);
+//        existingUserFigure.setUserFigurePK(userFigure.getUserFigurePK());
+//        existingUserFigure.setQuantity(userFigure.getQuantity());
+//
+//        return userFigureRepository.save(existingUserFigure);
+//    }
 
 }

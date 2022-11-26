@@ -13,23 +13,23 @@ public class FigureUserOfferService {
     @Autowired
     private FigureUserOfferRepository figureUserOfferRepository;
 
-    public List<FigureUserOffer> getFiguresUserOffers(){
-        return figureUserOfferRepository.findAll();
-    }
+//    public List<FigureUserOffer> getFiguresUserOffers(){
+//        return figureUserOfferRepository.findAll();
+//    }
+//
+//    public FigureUserOffer saveFigureUserOffer(FigureUserOffer figureUserOffer){
+//        return figureUserOfferRepository.save(figureUserOffer);
+//    }
 
-    public FigureUserOffer saveFigureUserOffer(FigureUserOffer figureUserOffer){
-        return figureUserOfferRepository.save(figureUserOffer);
-    }
-
-    public String deleteFigureUserOffer(FigureUserOfferPK figureUserOfferPK){
-        figureUserOfferRepository.deleteById(figureUserOfferPK);
-        return "Relation User - Offer removed";
-    }
+//    public String deleteFigureUserOffer(FigureUserOfferPK figureUserOfferPK){
+//        figureUserOfferRepository.deleteById(figureUserOfferPK);
+//        return "Relation User - Offer removed";
+//    }
 
 
-    public FigureUserOffer updateFigureUserOffer(FigureUserOffer figureUserOffer){
-        FigureUserOffer existingFigureUserOffer = figureUserOfferRepository.findById(figureUserOffer.getFigureUserOfferPK()).orElse(null);
-
-        return figureUserOfferRepository.save(existingFigureUserOffer);
-    }
+//    public FigureUserOffer updateFigureUserOffer(FigureUserOffer figureUserOffer){
+//        FigureUserOffer existingFigureUserOffer = figureUserOfferRepository.findById(figureUserOffer.getFigureUserOfferPK()).orElse(null);
+//
+//        return figureUserOfferRepository.save(existingFigureUserOffer);
+//    }
 }

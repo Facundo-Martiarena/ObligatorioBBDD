@@ -36,7 +36,10 @@ public class CreateOfferRequestDTO {
     }
 
     public String getState_offer() {
-        return "ACTIVO";
+        if ("".equals(this.state_offer)){
+            return "ACTIVO";
+        }
+        return this.state_offer;
     }
 
     public void setState_offer(String state_offer) {

@@ -15,24 +15,24 @@ public class FigureUserOfferController {
     @Autowired
     private FigureUserOfferService figureUserOfferService;
 
-    @PostMapping("/addFigureUserOffer")
-    public FigureUserOffer addFigureUserOffer(@RequestBody FigureUserOffer figureUserOffer){
-        return figureUserOfferService.saveFigureUserOffer(figureUserOffer);
-    }
-
-
-    @GetMapping("/figuresUsersOffers")
-    public List<FigureUserOffer> findAllFiguresUserOffers(){
-        return figureUserOfferService.getFiguresUserOffers();
-    }
-
-    @DeleteMapping("/deleteFUO/{figurePK}")
-    public String deleteFigureUserOffer(@PathVariable FigureUserOfferPK figureUserOfferPK){
-        return figureUserOfferService.deleteFigureUserOffer(figureUserOfferPK);
-    }
-
-    @PutMapping("/updateFigureUser")
-    public FigureUserOffer updateFigureUserOffer(@RequestBody FigureUserOffer figureUserOffer){
-        return figureUserOfferService.updateFigureUserOffer(figureUserOffer);
-    }
+//    @PostMapping("/addFigureUserOffer")
+//    public FigureUserOffer addFigureUserOffer(@RequestBody FigureUserOffer figureUserOffer){
+//        return figureUserOfferService.saveFigureUserOffer(figureUserOffer);
+//    }
+//
+//
+//    @GetMapping("/figuresUsersOffers")
+//    public List<FigureUserOffer> findAllFiguresUserOffers(){
+//        return figureUserOfferService.getFiguresUserOffers();
+//    }
+//
+//    @DeleteMapping("/deleteFUO/{figurePK}")
+//    public String deleteFigureUserOffer(@PathVariable FigureUserOfferPK figureUserOfferPK){
+//        return figureUserOfferService.deleteFigureUserOffer(figureUserOfferPK);
+//    }
+//
+//    @PutMapping("/updateFigureUser")
+//    public FigureUserOffer updateFigureUserOffer(@RequestBody FigureUserOffer figureUserOffer){
+//        return figureUserOfferService.updateFigureUserOffer(figureUserOffer);
+//    }
 }

@@ -1,24 +1,14 @@
 package com.ucu.BBDD.service;
 
-import com.ucu.BBDD.entity.AppUser;
 import com.ucu.BBDD.entity.Offer;
-import com.ucu.BBDD.entity.Publication;
 import com.ucu.BBDD.model.*;
-import com.ucu.BBDD.repository.AppUserRepository;
 import com.ucu.BBDD.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Service;
 
-import java.beans.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OfferService {
@@ -42,7 +32,7 @@ public class OfferService {
        return new ArrayList<>();
     }*/
 
-    public Offer saveOffer(String email, Integer publication_id){
+    public Offer createOffer(String email, Integer publication_id){
 
         String sql = String.format("INSERT INTO public.offer(" +
                 " acepted_date, email_bidder, publication_id, state)" +
@@ -171,32 +161,48 @@ public class OfferService {
 
 
 
-    public boolean saveOffer(CreateOfferRequestDTO createOfferRequestDTO) {
-        Integer id_offer;
-        String sql = String.format("INSERT INTO public.offer(" +
-                        " email_bidder, publication_id, state)" +
-                        " VALUES ('%s', %d, '%s')" +
-                        " RETURNING id_offer;"
-                ,createOfferRequestDTO.getEmail_bidder()
-                ,createOfferRequestDTO.getId_publication()
-                ,createOfferRequestDTO.getState_offer());
-        System.out.println(sql);
-        id_offer = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> rs.getInt("id_offer"));
+    public ResponseCreateOfferDTO createOffer(CreateOfferRequestDTO createOfferRequestDTO) {
 
-        List<FigureOfferDTO> figures = createOfferRequestDTO.getFigures();
+        ResponseCreateOfferDTO response = new ResponseCreateOfferDTO();
 
-        figures.forEach(
-                f -> jdbcTemplate.update(String.format("INSERT INTO public.figure_user_offer(" +
-                " id_offer, number_f_offer_bidder, state_damage_f_offer_bidder, quantity)" +
-                " VALUES ('%d','%s' , '%s', '%d');", id_offer, f.getNumber(), f.getState_damage(), f.getQuantity())));
-    return true;
+        //Consultar si la publicacion a la cual se va a ofertar esta activa
+        //Esto es para cuando se realiza una contraoferta, tener en cuenta que la publicacion ya no este disponible
+        //ya que el boton para contraofertar va a estar en ofertas y no en el muro de publicaciones
+        //Si retornamos true es porque creamos la oferta, si retornamos false no se podra contraofertar.
+
+        String sqlIsPublicationActive = String.format("SELECT activated" +
+                        " FROM public.publication" +
+                        " WHERE publication_id = %d;", createOfferRequestDTO.getId_publication());
+        boolean isActive = Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlIsPublicationActive, (rs, rowNum) -> rs.getBoolean("activated")));
+
+        if (isActive){
+            Integer id_offer;
+            String sql = String.format("INSERT INTO public.offer(" +
+                            " email_bidder, publication_id, state)" +
+                            " VALUES ('%s', %d, '%s')" +
+                            " RETURNING id_offer;"
+                    ,createOfferRequestDTO.getEmail_bidder()
+                    ,createOfferRequestDTO.getId_publication()
+                    ,createOfferRequestDTO.getState_offer());
+            id_offer = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> rs.getInt("id_offer"));
+
+            List<FigureOfferDTO> figures = createOfferRequestDTO.getFigures();
+
+            figures.forEach(
+                    f -> jdbcTemplate.update(String.format("INSERT INTO public.figure_user_offer(" +
+                            " id_offer, number_f_offer_bidder, state_damage_f_offer_bidder, quantity)" +
+                            " VALUES ('%d','%s' , '%s', '%d');", id_offer, f.getNumber(), f.getState_damage(), f.getQuantity())));
+
+            response.setMessage("OFERTA CREADA");
+            return response;
+        }
+        response.setMessage(String.format("NO SE PUDO CREAR LA OFERTA PORQUE LA PUBLICACION '%s' NO ESTA MAS ACTIVA", createOfferRequestDTO.getId_publication()));
+        return response;
     }
 
 
 
     public boolean acceptOffer(String id) {
-
-
 
             // Setear de estado a ACEPTADA
         String sqlOffer = String.format("UPDATE public.offer as o" +

@@ -24,9 +24,9 @@ public class FigureController {
         return new OkResponseDTO(linkFigureToUser);
     }
 
-    @GetMapping("/figures")
-    public FiguresResponse findAllFigures(){
-        return figureService.getFigures();
-    }
+//    @GetMapping("/figures")
+//    public FiguresResponse findAllFigures(){
+//        return figureService.getFigures();
+//    }
 
 }

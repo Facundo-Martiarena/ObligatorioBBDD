@@ -17,10 +17,10 @@ public class UserFigureController {
     @Autowired
     private UserFigureService userFigureService;
 
-    @PostMapping("/addUserFigure")
-    public UserFigure addUserFigure(@RequestBody UserFigure userFigure){
-        return userFigureService.saveUserFigure(userFigure);
-    }
+//    @PostMapping("/addUserFigure")
+//    public UserFigure addUserFigure(@RequestBody UserFigure userFigure){
+//        return userFigureService.saveUserFigure(userFigure);
+//    }
 
 
     @GetMapping("/userFigures/{email}")
@@ -31,8 +31,8 @@ public class UserFigureController {
     }
 
 
-    @PutMapping("/updateUserFigure")
-    public UserFigure updateUserFigure(@RequestBody UserFigure userFigure){
-        return userFigureService.updateUserFigure(userFigure);
-    }
+//    @PutMapping("/updateUserFigure")
+//    public UserFigure updateUserFigure(@RequestBody UserFigure userFigure){
+//        return userFigureService.updateUserFigure(userFigure);
+//    }
 }
