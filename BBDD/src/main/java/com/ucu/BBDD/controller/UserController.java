@@ -13,7 +13,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
         // Registro de usuario
     @PostMapping("/addUser")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -24,7 +23,6 @@ public class UserController {
          return new UserResponseDTO(accepted, email);
     }
 
-
         // Login de usuario
     @PostMapping("/loginUser")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -34,7 +32,6 @@ public class UserController {
         String email = loginRequestDTO.getEmail();
         return new UserResponseDTO(login, email);
     }
-
 
     @GetMapping("/users")
     public UsersResponse findAllUsers(){
@@ -47,6 +44,4 @@ public class UserController {
     public OkResponseDTO changePasswordUser(@RequestBody RequestBodyUser requestBodyUser){
         return new OkResponseDTO(userService.changePassword(requestBodyUser.getEmail(),requestBodyUser.getPassword()));
     }
-
-
 }

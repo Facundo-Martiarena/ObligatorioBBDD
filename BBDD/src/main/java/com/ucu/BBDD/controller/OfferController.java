@@ -13,18 +13,12 @@ public class OfferController {
     @Autowired
     private OfferService offerService;
 
-//    @PostMapping("/addOffer")
-//    public Offer addOffer(@RequestBody RequestBodyOffer requestBodyOffer){
-//        return offerService.saveOffer(requestBodyOffer.getEmail(), requestBodyOffer.getPublication_id());
-//    }
-
     @PostMapping("/addOffer")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
     public ResponseCreateOfferDTO addOffer(@RequestBody CreateOfferRequestDTO createOfferRequestDTO){
         return offerService.createOffer(createOfferRequestDTO);
     }
-
 
     @GetMapping("/offersBidder/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -55,14 +49,5 @@ public class OfferController {
         boolean accept = offerService.rejectOffer( id);
         return new OkResponseDTO(accept);
     }
-
-
-
-
-    @DeleteMapping("/deleteOffer/{id}")
-    public String deleteOffer(@PathVariable String id){
-        return offerService.deleteOffer(id);
-    }
-
 
 }

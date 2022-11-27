@@ -38,7 +38,4 @@ public class PublicationController {
         Boolean res = publicationService.updateActivatedPublication(requestBodyPublication.getPublication_id(), requestBodyPublication.getActivate());
         return new OkResponseDTO(res);
     }
-
-
-
 }

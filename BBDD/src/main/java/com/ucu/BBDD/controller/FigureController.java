@@ -1,13 +1,11 @@
 package com.ucu.BBDD.controller;
 
-import com.ucu.BBDD.entity.Figure;
 import com.ucu.BBDD.model.*;
 import com.ucu.BBDD.service.FigureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 public class FigureController {
@@ -23,10 +21,4 @@ public class FigureController {
         boolean linkFigureToUser = figureService.linkFigureToUser(figureRequestDTO);
         return new OkResponseDTO(linkFigureToUser);
     }
-
-//    @GetMapping("/figures")
-//    public FiguresResponse findAllFigures(){
-//        return figureService.getFigures();
-//    }
-
 }

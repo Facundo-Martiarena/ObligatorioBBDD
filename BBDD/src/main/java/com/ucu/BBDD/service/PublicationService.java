@@ -13,14 +13,8 @@ import java.util.List;
 
 @Service
 public class PublicationService {
-
-    @Autowired
-    private PublicationRepository publicationRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private FigureService figureService;
 
 
     public ResponsePublication getPublications(String email){
@@ -60,12 +54,9 @@ public class PublicationService {
         ResponsePublication result = new ResponsePublication(listPublications);
 
         return result;
-
     }
 
     public Publication createPublication(RequestAddPublicationDTO requestAddPublicationDTO){
-
-        //TODO: VALIDAR SI SE NECESITA EL pending_exchange
 
         String sql = String.format("INSERT INTO public.publication(activated, date, pending_exchange, email, number_f, state_damage)" +
                 " SELECT false, (SELECT NOW()::timestamp), 'PUEDE INTERCAMBIAR', usr.email, f.number, f.state_damage" +
@@ -99,18 +90,6 @@ public class PublicationService {
                     " WHERE publication_id=%d",activate,publication_id);
             return jdbcTemplate.update(sql) != 0;
         }
-
         return false;
-
     }
-
-
-
-    public String deletePublication(PublicationUserFigureFK publicationUserFigureFK){
-        publicationRepository.deleteById(publicationUserFigureFK);
-        return "Figure removed";
-    }
-
-
-
 }

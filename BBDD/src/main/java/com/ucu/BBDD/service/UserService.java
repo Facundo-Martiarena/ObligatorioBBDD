@@ -4,19 +4,14 @@ import com.fabdelgado.ciuy.*;
 import com.ucu.BBDD.entity.AppUser;
 import com.ucu.BBDD.model.LoginRequestDTO;
 import com.ucu.BBDD.model.UsersResponse;
-import com.ucu.BBDD.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 
 @Service
 public class UserService {
-
-    @Autowired
-    private AppUserRepository appUserRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -35,7 +30,6 @@ public class UserService {
         return jdbcTemplate.queryForObject(sql, ((rs, rowNum) -> new AppUser(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6))));
     }
 
-    //TODO cambiar returns por mensaje
     public boolean saveUser(AppUser appUser){
         if(validator.validateCi(appUser.getCi())){
                 String sql = String.format("INSERT INTO public.appuser(email, ci, lastname, name, password, phone) SELECT '%s', '%s', '%s', '%s','%s','%s' WHERE NOT EXISTS (SELECT email FROM public.appuser WHERE email = '%s')"
@@ -45,18 +39,6 @@ public class UserService {
         }
         return false;
     }
-
-    public String deleteUser(String email){
-        if(this.getUser(email)!=null){
-            String sql = String.format("DELETE FROM public.appuser WHERE email = '%s'",email);
-            jdbcTemplate.update(sql);
-            return "User removed";
-        }else{
-            return "ERROR";
-        }
-
-    }
-
 
     public String getUserEmail(AppUser appUser) {
         return appUser.getEmail();

@@ -1,8 +1,6 @@
 package com.ucu.BBDD.service;
 
-import com.ucu.BBDD.entity.Offer;
 import com.ucu.BBDD.model.*;
-import com.ucu.BBDD.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -14,76 +12,8 @@ import java.util.List;
 public class OfferService {
 
     @Autowired
-    private OfferRepository offerRepository;
-
-    @Autowired
-    private UserService userService;
-
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-    public List<Offer> getOffers(){
-        return offerRepository.findAll();
-    }
-
-    /*public List<OfferResponseDTO> getOffers(String email){
-       return new ArrayList<>();
-    }*/
-
-    public Offer createOffer(String email, Integer publication_id){
-
-        String sql = String.format("INSERT INTO public.offer(" +
-                " acepted_date, email_bidder, publication_id, state)" +
-                " SELECT (SELECT NOW()::timestamp), '%s', %s, pub.state_damage" +
-                " FROM public.publication as pub" +
-                " WHERE pub.publication_id = %s;",email,publication_id, publication_id);
-
-        return jdbcTemplate.queryForObject(sql,(rs, rowNum) -> new Offer(
-
-                rs.getInt("id_offer"),
-                rs.getString("state"),
-                rs.getDate("acepted_date"),
-                rs.getString("email_bidder"),
-                rs.getInt("publication_id")
-        ));
-    }
-
-    public String deleteOffer(String idOffer){
-        offerRepository.deleteById(idOffer);
-        return "Offer removed";
-    }
-
-//    public OfferResponseList getOffersBidder(String email){
-//
-//        String sql = String.format("SELECT pub.email as email_publisher, o.email_bidder as email_bidder, fuo.number_f_offer_bidder, f1.description as description_bidder, f2.description as description_publisher, o.state" +
-//                " FROM public.figure as f1,public.figure as f2, public.offer as o, public.publication as pub," +
-//                " public.figure_user_offer as fuo" +
-//                " WHERE o.email_bidder = '%s' AND fuo.id_offer = o.id_offer" +
-//                " AND f1.number = fuo.number_f_offer_bidder AND o.publication_id = pub.publication_id" +
-//                " AND pub.number_f = f2.number;",email);
-//        List<OfferResponsePrimary> offerBidderList = jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponsePrimary(
-//                rs.getString("description_bidder"),
-//                rs.getString("description_publisher"),
-//                rs.getString("state")
-//
-//        ));
-//
-//        List<String> descriptions = new ArrayList<>();
-//        OfferResponseList offerlist = new OfferResponseList();
-//        List<OffersResponse> offers = new ArrayList<>();
-//        offerBidderList.stream().forEach(offerB -> descriptions.add(offerB.getDescription_publisher()));
-//
-//        if(descriptions.size() != 0){
-//             offers.add(new OffersResponse(offerBidderList.get(0).getDescription_bidder(),descriptions,
-//                     offerBidderList.get(0).getState_offer()));
-//            offerlist.setListOffers(offers);
-//            return offerlist;
-//        }
-
-//        return null;
-//    }
 
     public OfferResponseList getOffersBidder(String email) {
         String sql = String.format("SELECT pub.publication_id, o.id_offer,pub.email as email_publisher, o.email_bidder as email_bidder, f1.description as description_publisher, o.state" +
@@ -128,10 +58,7 @@ public class OfferService {
 
         OffersFromPublication response = new OffersFromPublication();
         List<OffersResponse> listOffers = new ArrayList<>();
-
-
         List<Integer> idOffersAlreadyAdded = new ArrayList<>();
-
 
         for (OfferResponsePrimary offer: offers) {
             if (!idOffersAlreadyAdded.contains(offer.getId_offer())){
@@ -139,9 +66,6 @@ public class OfferService {
                 idOffersAlreadyAdded.add(offer.getId_offer());
             }
         }
-
-
-        //offers.forEach(e -> (!listOffers.contains(e.getId_oferta()) ? listOffers.add(new OffersResponse(e.getDescription_publisher(), this.getDescriptionsBidder(e.getId_oferta()), e.getState_offer())) : ));
         response.setListOffers(listOffers);
 
         return response;
@@ -158,8 +82,6 @@ public class OfferService {
         return descriptionsPublisher;
 
     }
-
-
 
     public ResponseCreateOfferDTO createOffer(CreateOfferRequestDTO createOfferRequestDTO) {
 
@@ -282,7 +204,7 @@ public class OfferService {
                 new FigureOfferDTO(rs.getString("number"), rs.getString("state_damage"),0));
 
             // Obtener el email del ofertante
-        String emailBidder = jdbcTemplate.queryForObject(String.format("SELECT o.email_bidder FROM public.offer as o WHERE o.id_offer = %d",id), (rs,rowNum) -> rs.getString("email_bidder"));
+        String emailBidder = jdbcTemplate.queryForObject(String.format("SELECT o.email_bidder FROM public.offer as o WHERE o.id_offer = %d",Integer.parseInt(id)), (rs,rowNum) -> rs.getString("email_bidder"));
 
         if(!allFiguresinOffer.isEmpty()){
             for (FigureOfferDTO figure: allFiguresinOffer) {
@@ -307,7 +229,9 @@ public class OfferService {
                             " WHERE o.email_bidder = '%s'" +
                             " AND fuo.number_f_offer_bidder= '%s'" +
                             " AND fuo.state_damage_f_offer_bidder= '%s'" +
-                            " AND o.id_offer=fuo.id_offer", emailBidder, figure.getNumber(), figure.getState_damage());
+                            " AND o.id_offer=fuo.id_offer" +
+                            " AND o.id_offer <> %d" +
+                            " AND fuo.id_offer <> %d", emailBidder, figure.getNumber(), figure.getState_damage(), Integer.parseInt(id), Integer.parseInt(id));
 
                     List<Integer> offersToDelete = jdbcTemplate.query(sqlOffersToDelete, (rs, rowNum) ->
                             rs.getInt("id_offer"));
@@ -336,13 +260,4 @@ public class OfferService {
 
         return true;
     }
-
-
-//    public Offer updateOffer(Offer offer){
-//        Offer existingOffer = offerRepository.findById(offer.getIdOffer()).orElse(null);
-//        existingOffer.setAcepted_date(offer.getAcepted_date());
-//        existingOffer.setState(offer.getState());
-//
-//        return offerRepository.save(existingOffer);
-//    }
 }
