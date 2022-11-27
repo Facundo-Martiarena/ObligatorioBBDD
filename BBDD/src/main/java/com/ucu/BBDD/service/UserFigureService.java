@@ -3,7 +3,6 @@ package com.ucu.BBDD.service;
 
 import com.ucu.BBDD.model.UserFigureResponse;
 import com.ucu.BBDD.model.UserFiguresResponseDTO;
-import com.ucu.BBDD.repository.UserFigureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;

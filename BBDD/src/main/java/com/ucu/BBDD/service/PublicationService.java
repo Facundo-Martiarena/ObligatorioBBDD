@@ -4,7 +4,6 @@ import com.ucu.BBDD.entity.*;
 import com.ucu.BBDD.model.PublicationResponseDTO;
 import com.ucu.BBDD.model.RequestAddPublicationDTO;
 import com.ucu.BBDD.model.ResponsePublication;
-import com.ucu.BBDD.repository.PublicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
