@@ -271,8 +271,60 @@ public class OfferService {
             jdbcTemplate.update(sqlDeleteUserFigures);
         }
 
+        //Nos posicionamos como ofertante y debemos quitarle la figurita utilizada en la oferta
 
+            // Obtener todas las figuritas de la oferta
+        String sqlAllFiguresinOffer = String.format("SELECT fuo.number_f_offer_bidder as number, fuo.state_damage_f_offer_bidder as state_damage" +
+                " FROM public.offer as o" +
+                " JOIN public.figure_user_offer as fuo" +
+                " ON o.id_offer = %d AND o.id_offer = fuo.id_offer", Integer.parseInt(id));
+        List<FigureOfferDTO> allFiguresinOffer = jdbcTemplate.query(sqlAllFiguresinOffer, (rs,rowNum) ->
+                new FigureOfferDTO(rs.getString("number"), rs.getString("state_damage"),0));
 
+            // Obtener el email del ofertante
+        String emailBidder = jdbcTemplate.queryForObject(String.format("SELECT o.email_bidder FROM public.offer as o WHERE o.id_offer = %d",id), (rs,rowNum) -> rs.getString("email_bidder"));
+
+        if(!allFiguresinOffer.isEmpty()){
+            for (FigureOfferDTO figure: allFiguresinOffer) {
+                String sqlGetFigureQuantity = String.format("SELECT quantity" +
+                        " FROM public.user_figure" +
+                        " WHERE email = '%s' AND number = '%s' AND state_damage = '%s';", emailBidder,figure.getNumber(),figure.getState_damage());
+
+                Integer quantity = jdbcTemplate.queryForObject(sqlGetFigureQuantity, (rs, rowNum) -> rs.getInt("quantity"));
+
+                //continua con si es > 1 se le resta 1 a la cantidad de la figurita
+                //si es 1 se elimina la figurita del usuario y ademas se busca q la figurita no haya sido usada
+                //en publicaciones u ofertas
+                if (quantity > 1) {
+                    String sqlLessQuantity = String.format("UPDATE public.user_figure as uf" +
+                            " SET quantity = uf.quantity - 1" +
+                            " WHERE uf.email = '%s' AND uf.number = '%s' AND uf.state_damage = '%s'", emailBidder, figure.getNumber(), figure.getState_damage());
+                    jdbcTemplate.update(sqlLessQuantity);
+                }else {
+                    // Buscar todos los ids usados por el ofertante en ofertas
+                    String sqlOffersToDelete = String.format("SELECT o.id_offer" +
+                            " FROM public.offer as o, public.figure_user_offer as fuo" +
+                            " WHERE o.email_bidder = '%s'" +
+                            " AND fuo.number_f_offer_bidder= '%s'" +
+                            " AND fuo.state_damage_f_offer_bidder= '%s'" +
+                            " AND o.id_offer=fuo.id_offer", emailBidder, figure.getNumber(), figure.getState_damage());
+
+                    List<Integer> offersToDelete = jdbcTemplate.query(sqlOffersToDelete, (rs, rowNum) ->
+                            rs.getInt("id_offer"));
+
+                    offersToDelete.forEach(offer -> jdbcTemplate.update(String.format("UPDATE public.offer" +
+                            " SET state='CANCELADA'" +
+                            " WHERE id_offer=%d;", offer)));
+
+                    String sqlDeleteUserFigures = String.format("DELETE" +
+                            " FROM public.user_figure as uf" +
+                            " WHERE uf.email= '%s'" +
+                            " AND uf.number= '%s'" +
+                            " AND uf.state_damage ='%s'", emailBidder, figure.getNumber(), figure.getState_damage());
+                    jdbcTemplate.update(sqlDeleteUserFigures);
+                }
+            }
+        }
         return true;
     }
 
