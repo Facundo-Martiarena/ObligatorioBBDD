@@ -48,7 +48,9 @@ public class OfferService {
                 " AND uf1.number = f1.number" +
                 " AND fuo.number_f_offer_bidder = uf2.number" +
                 " AND fuo.state_damage_f_offer_bidder = uf2.state_damage" +
-                " AND uf2.number = f2.number",Integer.parseInt(publicationId));
+                " AND uf2.number = f2.number" +
+                " AND o.state <> 'RECHAZADA'" +
+                " AND o.state <> 'CANCELADA'",Integer.parseInt(publicationId));
         List<OfferResponsePrimary> offers = jdbcTemplate.query(sql, (rs, rowNum) -> new OfferResponsePrimary(
                 rs.getString("description_publisher"),
                 rs.getInt("id_offer"),
